@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "526358611163",
+    "project_id": "mero-khet-c531d",
+    "storage_bucket": "mero-khet-c531d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:526358611163:android:4dbd67804a82b1f0cbb8fe",
+        "android_client_info": {
+          "package_name": "com.example.merokhetapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJx8lkLraWKJzbYv-cTlJCanktdXBC6K8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

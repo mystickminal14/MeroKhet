@@ -17,13 +17,14 @@ class FarmerRegistrationPage extends StatefulWidget {
 }
 
 class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
+  final _formKey = GlobalKey<FormState>();
   String name = '';
   String phone = '';
   String email = '';
   String pass = '';
+
   String? nameErr, passErr, emailErr, phoneErr;
   bool _isSubmitted = false;
-  final _formKey = GlobalKey<FormState>();
   final border = const OutlineInputBorder(
       borderSide: BorderSide(
         width: 1.5,
@@ -33,15 +34,13 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
       ),
       borderRadius: BorderRadius.all(Radius.circular(5)));
 
-  Widget _nameField() {
-    final Map<String, dynamic>? data =
-    ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
+  Widget _nameField() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         const Text(
-          "Email or Phone",
+          "Fullname",
           style: TextStyle(
               fontFamily: 'poppins', fontSize: 14, fontWeight: FontWeight.w400),
         ),
@@ -54,19 +53,15 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
           },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
+
           decoration: InputDecoration(
-            helperText: _isSubmitted? Validators.validateName(name):null,
+            helperText: _isSubmitted ? Validators.validateName(name) : null,
             helperStyle: const TextStyle(
                 color: Colors.red,
-                fontFamily:'poppins',
-                fontStyle: FontStyle.italic
-            ),
-            hintText: "Email or Phone",
-            hintStyle: const TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
                 fontFamily: 'poppins',
-                fontWeight: FontWeight.w400),
+                fontStyle: FontStyle.italic),
+            hintText: "Full name",
+            hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
             fillColor: Colors.white,
             enabledBorder: border,
@@ -88,26 +83,23 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
         ),
         const SizedBox(height: 5),
         TextField(
-    onChanged: (value) {
-    setState(() {
-    phone = value;
-    });
-    },
+          onChanged: (value) {
+            setState(() {
+              phone = value;
+            });
+          },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
+          keyboardType: TextInputType.visiblePassword,
+
           decoration: InputDecoration(
-            helperText: _isSubmitted? Validators.validatePhone(phone):null,
+            helperText: _isSubmitted ? Validators.validatePhone(phone) : null,
             helperStyle: const TextStyle(
                 color: Colors.red,
-                fontFamily:'poppins',
-                fontStyle: FontStyle.italic
-            ),
-            hintText: "Phone Number",
-            hintStyle: const TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
                 fontFamily: 'poppins',
-                fontWeight: FontWeight.w400),
+                fontStyle: FontStyle.italic),
+            hintText: "Phone Number",
+            hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
             fillColor: Colors.white,
             enabledBorder: border,
@@ -135,20 +127,17 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
             });
           },
           style: const TextStyle(
-              fontFamily: 'poppins', fontSize: 12, fontWeight: FontWeight.w400),
+              fontFamily: 'poppins', fontWeight: FontWeight.w400),
+          keyboardType: TextInputType.visiblePassword,
+          obscureText: true,
           decoration: InputDecoration(
-            helperText: _isSubmitted? Validators.validateEmail(email):null,
+            helperText: _isSubmitted ? Validators.validateEmail(email) : null,
             helperStyle: const TextStyle(
                 color: Colors.red,
-                fontFamily:'poppins',
-                fontStyle: FontStyle.italic
-            ),
-            hintText: "Enter email or phone number",
-            hintStyle: const TextStyle(
-                color: Colors.grey,
-                fontSize: 14,
                 fontFamily: 'poppins',
-                fontWeight: FontWeight.w400),
+                fontStyle: FontStyle.italic),
+            hintText: "Email",
+            hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
             fillColor: Colors.white,
             enabledBorder: border,
@@ -179,12 +168,11 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           decoration: InputDecoration(
-            helperText: _isSubmitted? Validators.validatePassword(pass):null,
+            helperText: _isSubmitted ? Validators.validatePassword(pass) : null,
             helperStyle: const TextStyle(
                 color: Colors.red,
-                fontFamily:'poppins',
-                fontStyle: FontStyle.italic
-            ),
+                fontFamily: 'poppins',
+                fontStyle: FontStyle.italic),
             hintText: "Password",
             hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
@@ -197,31 +185,8 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
       ],
     );
   }
-  void _onRegister() {
-    setState(() {
-      _isSubmitted = true;
-    });
 
-    if (_formKey.currentState!.validate()) {
-      final Map<String, dynamic>? data =
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-      final Map<String, dynamic> combinedData = {
-        ...data ?? {},
-        'name': name,
-        'phone': phone,
-        'email': email,
-        'password': pass,
-        'role': "farmer",
-      };
-
-      Navigator.pushReplacementNamed(
-        context,
-        '/farmer_verification',
-        arguments: combinedData,
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -293,7 +258,34 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
                             const SizedBox(
                               height: 12,
                             ),
-                            CustomButton(text: 'Register', onPressed: _onRegister)
+                            CustomButton(text: 'Register', onPressed: ()async{
+                              setState(() {
+                                _isSubmitted = true;
+                              });
+
+
+                              if (_formKey.currentState!.validate()) {
+
+                                final Map<String, dynamic>? data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+                                // Prepare combined data with form input values
+                                final Map<String, dynamic> combinedData = {
+                                  ...data ?? {},
+                                  'name': name,
+                                  'phone': phone,
+                                  'email': email,
+                                  'password': pass,
+                                  'role': "farmer",
+                                };
+
+
+                                await Navigator.pushReplacementNamed(
+                                  context,
+                                  '/farmer_verification',
+                                  arguments: combinedData,
+                                );
+                              }
+                            })
 
                           ],
                         )),

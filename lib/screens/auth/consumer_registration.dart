@@ -52,15 +52,14 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
           },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
+
           decoration: InputDecoration(
             helperText: _isSubmitted ? Validators.validateName(name) : null,
             helperStyle: const TextStyle(
                 color: Colors.red,
                 fontFamily: 'poppins',
                 fontStyle: FontStyle.italic),
-            hintText: "Password",
+            hintText: "Full name",
             hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
             fillColor: Colors.white,
@@ -91,14 +90,14 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
           keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
+
           decoration: InputDecoration(
             helperText: _isSubmitted ? Validators.validatePhone(phone) : null,
             helperStyle: const TextStyle(
                 color: Colors.red,
                 fontFamily: 'poppins',
                 fontStyle: FontStyle.italic),
-            hintText: "Password",
+            hintText: "Phone Number",
             hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
             fillColor: Colors.white,
@@ -136,7 +135,7 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
                 color: Colors.red,
                 fontFamily: 'poppins',
                 fontStyle: FontStyle.italic),
-            hintText: "Password",
+            hintText: "Email",
             hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
             fillColor: Colors.white,
@@ -269,12 +268,7 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
                                             name,
                                             phone,
                                             'consumer');
-                                    if (result == null) {
-                                      ErrorDialog.showErrorDialog(context,
-                                          "Registration failed. Please try again.");
-                                    } else {
-                                      Navigator.pushReplacementNamed(context, '/login');
-                                    }
+                                    Navigator.pushReplacementNamed(context, '/login');
                                   }
                                 })
                           ],

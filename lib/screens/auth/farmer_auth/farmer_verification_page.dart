@@ -23,8 +23,8 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
   final picker = ImagePicker();
   final AuthService _auth = AuthService();
 
-  String error = '', error2 = '',farmName='';
-  String?  nameErr = '';
+  String error = '', error2 = '', farmName = '';
+  String? nameErr = '';
   final _formKey = GlobalKey<FormState>();
   bool _isSubmitted = false;
   // Upload Farmer License Image
@@ -56,6 +56,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
       });
     }
   }
+
   void _onRegister() async {
     setState(() {
       _isSubmitted = true;
@@ -63,37 +64,37 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
 
     if (_formKey.currentState!.validate()) {
       final Map<String, dynamic>? data =
-      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+          ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-      if ( data?['email'] == null ) {
-        ErrorDialog.showErrorDialog(context, "Missing em required information.");
+      if (data?['email'] == null) {
+        ErrorDialog.showErrorDialog(
+            context, "Missing em required information.");
         return;
       }
 
-      if ( data?['qna6_region'] == null ) {
+      if (data?['qna6_region'] == null) {
         ErrorDialog.showErrorDialog(context, "Missing required information.");
         return;
       }
-      dynamic result = await _auth.registerWithEmailAndPassword(
-        context,
-        data?['email'],
-        data?['password'],
-        data?['name'],
-        data?['phone'],
-        data?['role'],
-        farmAccountName: farmName,
-        license: _image?.path,
-        foodSafety: _image2?.path,
-        situation: data?['qna1'],
-        business: data?['qna2'],
-        productFocused: data?['qna3'],
-        productNature: data?['qna4'],
-        package: data?['qna5'],
-        region: data?['qna6_region'],
-        delivery: data?['qna6_delivery'],
-      );
-
-      if (result ) {
+      if (_formKey.currentState!.validate()) {
+        dynamic result = await _auth.registerWithEmailAndPassword(
+          context,
+          data?['email'],
+          data?['password'],
+          data?['name'],
+          data?['phone'],
+          data?['role'],
+          farmAccountName: farmName,
+          license: _image?.path,
+          foodSafety: _image2?.path,
+          situation: data?['qna1'],
+          business: data?['qna2'],
+          productFocused: data?['qna3'],
+          productNature: data?['qna4'],
+          package: data?['qna5'],
+          region: data?['qna6_region'],
+          delivery: data?['qna6_delivery'],
+        );
 
         Navigator.pushReplacementNamed(context, '/login');
       }
@@ -125,21 +126,21 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                   child: Column(
                     children: [
                       LayoutBuilder(
-                      builder: (context, constraints) {
-                double screenWidth = constraints.maxWidth;
-                return Container(
-                alignment: Alignment.center,
-                child: Text(
-                "Farm Verification",
-                style: TextStyle(
-                fontFamily: "poppins",
-                fontSize: screenWidth * 0.1,
-                fontWeight: FontWeight.w600,
-                ),
-                ),
-                );
-                },
-                ),
+                        builder: (context, constraints) {
+                          double screenWidth = constraints.maxWidth;
+                          return Container(
+                            alignment: Alignment.center,
+                            child: Text(
+                              "Farm Verification",
+                              style: TextStyle(
+                                fontFamily: "poppins",
+                                fontSize: screenWidth * 0.1,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
                       const SizedBox(height: 15),
                       const Text(
                         "Please provide the necessary business details to complete your registration. This information will help verify your business and ensure compliance with regulations.",
@@ -154,7 +155,9 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                       CustomTextField(
                         label: 'Farm Account Name',
                         hintText: 'Farm Name',
-                        helperText: _isSubmitted ? Validators.validateFarmName(farmName) : null,
+                        helperText: _isSubmitted
+                            ? Validators.validateFarmName(farmName)
+                            : null,
                         helperStyle: const TextStyle(
                           color: Colors.red,
                           fontFamily: 'Poppins',
@@ -166,13 +169,13 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                           });
                         },
                       ),
-
                       const SizedBox(height: 15),
                       CustomFileUpload(
                         upload: "Upload farmer license",
                         labelText:
                             "Upload your valid farmer license to verify your farming operations.",
-                        onPressed: uploadLicense, // Call the upload function here
+                        onPressed:
+                            uploadLicense, // Call the upload function here
                         label: "Farmer License",
                       ),
                       Row(
@@ -254,7 +257,8 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                       CustomNextButton(
                         text: "Back",
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/farmer_register');
+                          Navigator.pushReplacementNamed(
+                              context, '/farmer_register');
                         },
                         buttonColor: const Color(0xFF4B6F39),
                       ),
