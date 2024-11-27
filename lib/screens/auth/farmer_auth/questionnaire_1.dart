@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/services/auth.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_next_button.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/questionnaire_header.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/questions.dart';
@@ -17,6 +18,16 @@ class Questionnaire1state extends State<Questionnaire1> {
   final ans = "";
   final title = "Let’s Begin";
   final qna = "Which of the following best describes your current situation?";
+
+
+  bool _isSubmitted = false;
+  String? selectedAnswer;
+  void _updateSelectedAnswer(String answer) {
+    setState(() {
+      selectedAnswer = answer;
+      _isSubmitted = false; // Reset error when an option is selected
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +64,17 @@ class Questionnaire1state extends State<Questionnaire1> {
                         title: 'I’m new to selling',
                         icon: Icons.add_box_outlined,
                         initialValue: false,
-                        onChanged: (bool? value) {},
+                        onChanged: (bool? value) async {
+                          if(value==true){
+
+                              if (value == true) _updateSelectedAnswer("I’m new to selling");
+
+                          }else{
+                            selectedAnswer=null;
+                            _isSubmitted=true;
+
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 15,
@@ -62,11 +83,27 @@ class Questionnaire1state extends State<Questionnaire1> {
                         title: 'I already have a business',
                         icon: Icons.business,
                         initialValue: false,
-                        onChanged: (bool? value) {},
+                        onChanged: (bool? value) async{
+                          if (value == true){
+                            _updateSelectedAnswer("I already have a business");
+                          }else{
+                            selectedAnswer=null;
+                            _isSubmitted=true;
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 15,
                       ),
+                      if (_isSubmitted && selectedAnswer == null)
+                        const Text(
+                          'You must select one option',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontFamily: 'Poppins',
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
                     ],
                   ),
                 ],
@@ -76,14 +113,20 @@ class Questionnaire1state extends State<Questionnaire1> {
                   CustomNextButton(
                       text: "Continue",
                       onPressed: () {
-                        Navigator.pushNamed(context, '/qna2');
+                        if (selectedAnswer == null) {
+                          setState(() {
+                            _isSubmitted = true;
+                          });
+                        } else {
+                          Navigator.pushReplacementNamed(context, '/qna2', arguments: selectedAnswer);
+                        }
                       },
                       buttonColor: const Color(0xFF4B6F39)),
                   const SizedBox(height: 10),
                   CustomNextButton(
                       text: "Back",
                       onPressed: () {
-                        Navigator.pushNamed(context, '/home');
+                        Navigator.pushReplacementNamed(context, '/home');
                       },
                       buttonColor: const Color(0xFF4B6F39))
                 ],

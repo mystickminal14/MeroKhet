@@ -32,7 +32,7 @@ class CategoryGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         return CategoriesCard(
           onPressed: () {
-
+Navigator.pushNamed(context, '/individual_category');
           },
           text: categories[index]['text']!,
           img: categories[index]['img']!,

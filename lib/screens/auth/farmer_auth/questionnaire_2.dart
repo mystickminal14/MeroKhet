@@ -18,8 +18,18 @@ class Questionnaire2state extends State<Questionnaire2> {
   final title = "Business";
   final qna = "Are you a farmer or do you represent a business?";
 
+  bool _isSubmitted = false;
+  String? selectedAnswer;
+  void _updateSelectedAnswer(String answer) {
+    setState(() {
+      selectedAnswer = answer;
+      _isSubmitted = false; // Reset error when an option is selected
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    final String? data = ModalRoute.of(context)?.settings.arguments as String?;
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: SafeArea(
@@ -39,6 +49,7 @@ class Questionnaire2state extends State<Questionnaire2> {
                   const SizedBox(
                     height: 30,
                   ),
+
                   Column(
                     children: [
                       Questions(
@@ -53,7 +64,17 @@ class Questionnaire2state extends State<Questionnaire2> {
                         title: 'Yes, I’m a farmer',
                         icon: Icons.people,
                         initialValue: false,
-                        onChanged: (bool? value) {},
+                        onChanged: (bool? value) {
+                          if(value==true){
+
+                            if (value == true) _updateSelectedAnswer("Yes, I’m a farmer");
+
+                          }else{
+                            selectedAnswer=null;
+                            _isSubmitted=true;
+
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 15,
@@ -62,7 +83,17 @@ class Questionnaire2state extends State<Questionnaire2> {
                         title: 'No, I represent a business',
                         icon: Icons.business_center,
                         initialValue: false,
-                        onChanged: (bool? value) {},
+                        onChanged: (bool? value) {
+                          if(value==true){
+
+                            if (value == true) _updateSelectedAnswer("No, I represent a business");
+
+                          }else{
+                            selectedAnswer=null;
+                            _isSubmitted=true;
+
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 15,
@@ -76,14 +107,23 @@ class Questionnaire2state extends State<Questionnaire2> {
                   CustomNextButton(
                       text: "Continue",
                       onPressed: () {
-                        Navigator.pushNamed(context, '/qna3');
+                        if (selectedAnswer == null) {
+                          setState(() {
+                            _isSubmitted = true;
+                          });
+                        } else {
+                          Navigator.pushReplacementNamed(context, '/qna3', arguments: {
+                            'qna1':data,
+                            'qna2':selectedAnswer
+                          });
+                        }
                       },
                       buttonColor: const Color(0xFF4B6F39)),
                   const SizedBox(height: 10),
                   CustomNextButton(
                       text: "Back",
                       onPressed: () {
-                        Navigator.pushNamed(context, '/qna1');
+                        Navigator.pushReplacementNamed(context, '/qna1');
                       },
                       buttonColor: const Color(0xFF4B6F39))
                 ],

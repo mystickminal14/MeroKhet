@@ -12,7 +12,7 @@ class _FlashingPageState extends State<FlashingPage> {
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () {
+    Timer(const Duration(seconds: 3), () {
       Navigator.pushReplacementNamed(context, '/login');
     });
   }

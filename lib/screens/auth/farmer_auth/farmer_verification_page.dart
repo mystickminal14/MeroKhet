@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:merokhetapp/services/auth.dart';
+import 'package:merokhetapp/utils/auth_validators.dart';
+import 'package:merokhetapp/utils/error_dialog.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_next_button.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/questionnaire_header.dart';
 import 'package:merokhetapp/widgets/custom_file_upload_btn.dart';
 import 'package:merokhetapp/widgets/custom_text_field.dart';
-
 
 class FarmerVerificationPage extends StatefulWidget {
   const FarmerVerificationPage({super.key});
@@ -19,8 +21,12 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
   File? _image;
   File? _image2;
   final picker = ImagePicker();
-  String error = '', error2 = '';
+  final AuthService _auth = AuthService();
 
+  String error = '', error2 = '',farmName='';
+  String?  nameErr = '';
+  final _formKey = GlobalKey<FormState>();
+  bool _isSubmitted = false;
   // Upload Farmer License Image
   Future uploadLicense() async {
     final pickedImage = await picker.pickImage(source: ImageSource.gallery);
@@ -50,153 +56,213 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
       });
     }
   }
+  void _onRegister() async {
+    setState(() {
+      _isSubmitted = true;
+    });
+
+    if (_formKey.currentState!.validate()) {
+      final Map<String, dynamic>? data =
+      ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
+      if ( data?['email'] == null ) {
+        ErrorDialog.showErrorDialog(context, "Missing em required information.");
+        return;
+      }
+
+      if ( data?['qna6_region'] == null ) {
+        ErrorDialog.showErrorDialog(context, "Missing required information.");
+        return;
+      }
+      dynamic result = await _auth.registerWithEmailAndPassword(
+        context,
+        data?['email'],
+        data?['password'],
+        data?['name'],
+        data?['phone'],
+        data?['role'],
+        farmAccountName: farmName,
+        license: _image?.path,
+        foodSafety: _image2?.path,
+        situation: data?['qna1'],
+        business: data?['qna2'],
+        productFocused: data?['qna3'],
+        productNature: data?['qna4'],
+        package: data?['qna5'],
+        region: data?['qna6_region'],
+        delivery: data?['qna6_delivery'],
+      );
+
+      if (result ) {
+
+        Navigator.pushReplacementNamed(context, '/login');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic>? data =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+
     return Scaffold(
       body: SafeArea(
         child: Container(
           padding:
-          const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
+              const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
           width: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              QuestionnaireHeader(
-                onPressed: () {
-                  Navigator.pushNamed(context, 'farmer_register');
-                },
-              ),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    LayoutBuilder(
+          child: Form(
+            key: _formKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                QuestionnaireHeader(
+                  onPressed: () {
+                    Navigator.pushNamed(context, 'farmer_register');
+                  },
+                ),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      LayoutBuilder(
                       builder: (context, constraints) {
-                        double screenWidth = constraints.maxWidth;
-                        return Container(
-                          alignment: Alignment.center,
-                          child: Text(
-                            "Farm Verification",
-                            style: TextStyle(
-                              fontFamily: "poppins",
-                              fontSize: screenWidth * 0.1,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        );
-                      },
-                    ),
-                    const SizedBox(height: 15),
-                    const Text(
-                      "Please provide the necessary business details to complete your registration. This information will help verify your business and ensure compliance with regulations.",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: 12,
-                        fontFamily: 'poppins',
+                double screenWidth = constraints.maxWidth;
+                return Container(
+                alignment: Alignment.center,
+                child: Text(
+                "Farm Verification",
+                style: TextStyle(
+                fontFamily: "poppins",
+                fontSize: screenWidth * 0.1,
+                fontWeight: FontWeight.w600,
+                ),
+                ),
+                );
+                },
+                ),
+                      const SizedBox(height: 15),
+                      const Text(
+                        "Please provide the necessary business details to complete your registration. This information will help verify your business and ensure compliance with regulations.",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                          fontFamily: 'poppins',
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 15),
-                    const CustomTextField(
-                      label: "Farm account name",
-                      hintText: "Farm name",
-                    ),
-                    const SizedBox(height: 15),
-                    CustomFileUpload(
-                      upload: "Upload farmer license",
-                      labelText:
-                      "Upload your valid farmer license to verify your farming operations.",
-                      onPressed: uploadLicense, // Call the upload function here
-                      label: "Farmer License",
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        if (_image == null)
-                          Text(
-                            error,
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontFamily: 'poppins',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
+                      const SizedBox(height: 15),
+                      CustomTextField(
+                        label: 'Farm Account Name',
+                        hintText: 'Farm Name',
+                        helperText: _isSubmitted ? Validators.validateFarmName(farmName) : null,
+                        helperStyle: const TextStyle(
+                          color: Colors.red,
+                          fontFamily: 'Poppins',
+                          fontStyle: FontStyle.italic,
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            farmName = value;
+                          });
+                        },
+                      ),
+
+                      const SizedBox(height: 15),
+                      CustomFileUpload(
+                        upload: "Upload farmer license",
+                        labelText:
+                            "Upload your valid farmer license to verify your farming operations.",
+                        onPressed: uploadLicense, // Call the upload function here
+                        label: "Farmer License",
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (_image == null)
+                            Text(
+                              error,
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'poppins',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                            )
+                          else
+                            const Text(
+                              "Farmer License Uploaded successfully!",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'poppins',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.green,
+                              ),
                             ),
-                          )
-                        else
-                         const Text(
-                            "Farmer License Uploaded successfully!",
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontFamily: 'poppins',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.green,
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+                      CustomFileUpload(
+                        upload: "Upload food safety license",
+                        labelText:
+                            "Upload your food safety certification to ensure compliance with safety standards.",
+                        onPressed:
+                            uploadFoodLicense, // Call the upload function here
+                        label: "Food Safety License",
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (_image2 == null)
+                            Text(
+                              error2,
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'poppins',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                            )
+                          else
+                            const Text(
+                              "Food Safety License Uploaded successfully!",
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'poppins',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.green,
+                              ),
                             ),
-                          ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    CustomFileUpload(
-                      upload: "Upload food safety license",
-                      labelText:
-                      "Upload your food safety certification to ensure compliance with safety standards.",
-                      onPressed: uploadFoodLicense, // Call the upload function here
-                      label: "Food Safety License",
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        if (_image2 == null)
-                          Text(
-                            error2,
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontFamily: 'poppins',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.red,
-                            ),
-                          )
-                        else
-                        const  Text(
-                            "Food Safety License Uploaded successfully!",
-                            style: const TextStyle(
-                              fontStyle: FontStyle.italic,
-                              fontFamily: 'poppins',
-                              fontSize: 10,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.green,
-                            ),
-                          ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    CustomNextButton(
-                      text: "Continue",
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
-                      buttonColor: const Color(0xFF4B6F39),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomNextButton(
-                      text: "Back",
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/farmer_register');
-                      },
-                      buttonColor: const Color(0xFF4B6F39),
-                    ),
-                  ],
-                ),
-              )
-            ],
+                const SizedBox(height: 20),
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CustomNextButton(
+                        text: "Register",
+                        onPressed: _onRegister,
+                        buttonColor: const Color(0xFF4B6F39),
+                      ),
+                      const SizedBox(height: 10),
+                      CustomNextButton(
+                        text: "Back",
+                        onPressed: () {
+                          Navigator.pushReplacementNamed(context, '/farmer_register');
+                        },
+                        buttonColor: const Color(0xFF4B6F39),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

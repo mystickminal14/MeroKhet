@@ -34,10 +34,10 @@ class _CategoryBlockState extends State<CategoryBlock> {
             mainAxisAlignment: MainAxisAlignment.center, // Center content
             children: [
               Image.asset(
-                widget.img,  // Use the passed image
+                widget.img,
                 fit: BoxFit.cover,
-                width: 60,  // Adjust image width
-                height: 45, // Adjust image height
+                width: 60,
+                height: 45, 
               ),
 
               Text(

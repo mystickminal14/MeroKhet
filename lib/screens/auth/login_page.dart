@@ -1,4 +1,7 @@
 ﻿import 'package:flutter/material.dart';
+import 'package:merokhetapp/services/auth.dart';
+import 'package:merokhetapp/utils/auth_validators.dart';
+import 'package:merokhetapp/utils/error_dialog.dart';
 import 'package:merokhetapp/widgets/SocialIcons/facebook_icon.dart';
 import 'package:merokhetapp/widgets/SocialIcons/google_icon.dart';
 import 'package:merokhetapp/widgets/custom_button.dart';
@@ -13,6 +16,12 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final _formKey = GlobalKey<FormState>();
+  String email = '';
+  String pass = '';
+  final AuthService _auth = AuthService();
+  String? nameErr, passErr, emailErr, phoneErr;
+  bool _isSubmitted = false;
   final border = const OutlineInputBorder(
       borderSide: BorderSide(
         width: 1.5,
@@ -33,10 +42,20 @@ class _LoginPageState extends State<LoginPage> {
         ),
         const SizedBox(height: 5),
         TextField(
+          onChanged: (value) {
+            setState(() {
+              email = value;
+            });
+          },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
           decoration: InputDecoration(
             hintText: "Enter email or phone number",
+            helperText: _isSubmitted ? Validators.validateEmail(email) : null,
+            helperStyle: const TextStyle(
+                color: Colors.red,
+                fontFamily: 'poppins',
+                fontStyle: FontStyle.italic),
             hintStyle: const TextStyle(
                 color: Colors.grey,
                 fontSize: 14,
@@ -62,12 +81,22 @@ class _LoginPageState extends State<LoginPage> {
               fontSize: 14, fontFamily: 'poppins', fontWeight: FontWeight.w400),
         ),
         TextField(
+          onChanged: (value) {
+            setState(() {
+              pass = value;
+            });
+          },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
           keyboardType: TextInputType.visiblePassword,
           obscureText: true,
           decoration: InputDecoration(
             hintText: "Password",
+            helperText: _isSubmitted ? Validators.validatePassword(pass) : null,
+            helperStyle: const TextStyle(
+                color: Colors.red,
+                fontFamily: 'poppins',
+                fontStyle: FontStyle.italic),
             hintStyle: const TextStyle(fontSize: 14, color: Colors.grey),
             filled: true,
             suffixIcon: const Icon(Icons.visibility_off_rounded),
@@ -100,60 +129,80 @@ class _LoginPageState extends State<LoginPage> {
 
             ///column center
             Center(
-              child: Column(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 20),
-                    height: 130,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        const CustomTitle(
-                            title: "Sign in",
-                            subTitle: "Sign in to your account"),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomGoogleIcon(onPressed: () {}),
-                            const SizedBox(width: 10),
-                            CustomFacebookIcon(onPressed: () {}),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                      margin: const EdgeInsets.only(top: 30),
-                      padding:
-                          const EdgeInsets.only(top: 0, left: 28, right: 28),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      height: 130,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Container(
-                            child: _emailField(),
-                          ),
-                          const SizedBox(height: 14),
-                          Container(child: _passwordField()),
-                          const SizedBox(height: 8),
-                          const Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+                          const CustomTitle(
+                              title: "Sign in",
+                              subTitle: "Sign in to your account"),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text(
-                                "Forget Password?",
-                                style: TextStyle(
-                                    fontSize: 11,
-                                    fontFamily: 'poppins',
-                                    fontWeight: FontWeight.w400),
-                              )
+                              CustomGoogleIcon(onPressed: () {}),
+                              const SizedBox(width: 10),
+                              CustomFacebookIcon(onPressed: () {}),
                             ],
                           ),
-                          const SizedBox(
-                            height: 8,
-                          ),
-                          CustomButton(text: "Login", onPressed: () {Navigator.pushNamed(context, '/navi');})
                         ],
-                      )),
-                ],
+                      ),
+                    ),
+                    Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        padding:
+                            const EdgeInsets.only(top: 0, left: 28, right: 28),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              child: _emailField(),
+                            ),
+                            const SizedBox(height: 14),
+                            Container(child: _passwordField()),
+                            const SizedBox(height: 8),
+                            const Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                Text(
+                                  "Forget Password?",
+                                  style: TextStyle(
+                                      fontSize: 11,
+                                      fontFamily: 'poppins',
+                                      fontWeight: FontWeight.w400),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            CustomButton(
+                                text: "Login",
+                                onPressed: () async {
+                                  setState(() {
+                                    _isSubmitted = true;
+                                  });
+                                  if (_formKey.currentState!.validate()) {
+                                    dynamic result = await _auth
+                                        .logInWithEmailAndPassword(
+                                            context, email, pass);
+                                    if (result == null) {
+                                      ErrorDialog.showErrorDialog(context,
+                                          "Login failed. Please try again.");
+                                    } else {
+                                      Navigator.pushNamed(context, '/navi');
+                                    }
+                                  }
+                                })
+                          ],
+                        )),
+                  ],
+                ),
               ),
             ),
             const Spacer(),
@@ -179,7 +228,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 )
-
               ],
             )
           ],

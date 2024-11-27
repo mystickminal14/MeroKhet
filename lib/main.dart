@@ -1,4 +1,7 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/screens/wrapper.dart';
+import 'firebase_options.dart';
 import 'package:merokhetapp/navigation/navigation_flow.dart';
 import 'package:merokhetapp/screens/auth/consumer_registration.dart';
 import 'package:merokhetapp/screens/auth/farmer_auth/farmer_registration_page.dart';
@@ -17,7 +20,11 @@ import 'package:merokhetapp/screens/flashing_page.dart';
 import 'package:merokhetapp/screens/home/home.dart';
 
 
-void main() {
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   runApp(const MyApp());
 }
 
@@ -37,6 +44,7 @@ class MyApp extends StatelessWidget {
 
       routes: {
         '/': (context) => const FlashingPage(),
+        '/flash': (context) => const FlashingPage(),
         '/login': (context) => const LoginPage(),
         '/navi': (context) => const NavigationFlow(),
         '/consumer_registration': (context) => const ConsumerRegistration(),
@@ -51,6 +59,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/customer_dashboard': (context) => const ConsumerDashboard(),
         '/categories': (context) => const Categories(),
+        '/individual_category': (context) => const Categories(),
 
       },
     );
