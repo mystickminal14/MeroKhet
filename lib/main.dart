@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/screens/auth/resetpassword/emailverification.dart';
+import 'package:merokhetapp/screens/auth/resetpassword/forgotpassword.dart';
 import 'package:merokhetapp/screens/wrapper.dart';
 import 'firebase_options.dart';
 import 'package:merokhetapp/navigation/navigation_flow.dart';
@@ -47,6 +49,9 @@ class MyApp extends StatelessWidget {
         '/flash': (context) => const FlashingPage(),
         '/login': (context) => const LoginPage(),
         '/navi': (context) => const NavigationFlow(),
+        '/email_verify': (context) => const EmailVerification(),
+        '/forget_pass': (context) => const ForgetPassword(),
+
         '/consumer_registration': (context) => const ConsumerRegistration(),
         '/farmer_register': (context) => const FarmerRegistrationPage(),
         '/farmer_verification': (context) => const FarmerVerificationPage(),

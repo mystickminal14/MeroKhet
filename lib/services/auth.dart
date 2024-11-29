@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:merokhetapp/model/user_model.dart';
+import 'package:merokhetapp/utils/alert.dart';
 import 'package:merokhetapp/utils/error_dialog.dart';
 
 class AuthService {
@@ -10,11 +11,11 @@ class AuthService {
   UserModel? _userFromFirebaseUser(User? user, Map<String, dynamic>? userData) {
     return user != null && userData != null
         ? UserModel(
-      uid: user.uid,
-      email: userData['email'] ?? '',
-      password: '',
-      role: userData['role'] ?? '',
-    )
+            uid: user.uid,
+            email: userData['email'] ?? '',
+            password: '',
+            role: userData['role'] ?? '',
+          )
         : null;
   }
 
@@ -36,27 +37,31 @@ class AuthService {
   }
 
   Future registerWithEmailAndPassword(
-      BuildContext context,
-      String email,
-      String password,
-      String fullName,
-      String phone,
-      String role, {
-        String? farmAccountName,
-        String? license,
-        String? foodSafety,
-        String? situation,
-        String? business,
-        String? productFocused,
-        String? productNature,
-        String? package,
-        String? region,
-        String? delivery,
-      }) async {
+    BuildContext context,
+    String email,
+    String password,
+    String fullName,
+    String phone,
+    String role, {
+    String? farmAccountName,
+    String? license,
+    String? foodSafety,
+    String? situation,
+    String? business,
+    String? productFocused,
+    String? productNature,
+    String? package,
+    String? region,
+    String? delivery,
+  }) async {
     try {
       // Validate role
       if (role != 'farmer' && role != 'consumer') {
-        ErrorDialog.showErrorDialog(context, "Invalid role specified.");
+        ShowAlert.showAlert(
+          context,
+          'Invalid User role',
+          AlertType.error,
+        );
         return;
       }
 
@@ -68,7 +73,11 @@ class AuthService {
       User? user = result.user;
 
       if (user == null) {
-        ErrorDialog.showErrorDialog(context, "Registration failed.");
+        ShowAlert.showAlert(
+          context,
+          'Registration falied',
+          AlertType.error,
+        );
         return;
       }
 
@@ -96,11 +105,18 @@ class AuthService {
       }
 
       // Save user data to Firestore
-      await FirebaseFirestore.instance.collection('users').doc(user.uid).set(userData);
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .set(userData);
 
       print("User registered successfully as $role: ${user.uid}");
     } catch (e) {
-      ErrorDialog.showErrorDialog(context, "Error during registration: ${e.toString()}");
+      ShowAlert.showAlert(
+        context,
+        "Error during registration: ${e.toString()}",
+        AlertType.error,
+      );
     }
   }
 
@@ -116,7 +132,11 @@ class AuthService {
       User? user = result.user;
 
       if (user == null) {
-        ErrorDialog.showErrorDialog(context, "Login failed. Please try again.");
+        ShowAlert.showAlert(
+          context,
+          "Login failed! Please try again!",
+          AlertType.error,
+        );
         return null;
       }
 
@@ -127,7 +147,11 @@ class AuthService {
           .get();
 
       if (!userDoc.exists) {
-        ErrorDialog.showErrorDialog(context, "User not found in database.");
+        ShowAlert.showAlert(
+          context,
+          "User not found!!",
+          AlertType.error,
+        );
         return null;
       }
 
@@ -135,7 +159,11 @@ class AuthService {
       Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
       return _userFromFirebaseUser(user, data);
     } catch (e) {
-      ErrorDialog.showErrorDialog(context, "Error during login: ${e.toString()}");
+      ShowAlert.showAlert(
+        context,
+        "Error during login: ${e.toString()}",
+        AlertType.error,
+      );
       return null;
     }
   }
@@ -144,5 +172,22 @@ class AuthService {
   Future<void> signOut() async {
     await _auth.signOut();
     print("User signed out successfully.");
+  }
+
+  Future passwordReset(BuildContext context,email) async {
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim());
+      ShowAlert.showAlert(
+        context,
+        'Email verification has been sent to your Gmail account!',
+        AlertType.success,
+      );
+    } catch (e) {
+      ShowAlert.showAlert(
+        context,
+        "Email doesnot exist",
+        AlertType.error,
+      );
+    }
   }
 }

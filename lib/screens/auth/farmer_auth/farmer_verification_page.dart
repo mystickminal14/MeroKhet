@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:merokhetapp/services/auth.dart';
+import 'package:merokhetapp/utils/alert.dart';
 import 'package:merokhetapp/utils/auth_validators.dart';
 import 'package:merokhetapp/utils/error_dialog.dart';
+import 'package:merokhetapp/utils/loaders.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_next_button.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/questionnaire_header.dart';
 import 'package:merokhetapp/widgets/custom_file_upload_btn.dart';
@@ -20,6 +22,7 @@ class FarmerVerificationPage extends StatefulWidget {
 class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
   File? _image;
   File? _image2;
+  bool isLoading=false;
   final picker = ImagePicker();
   final AuthService _auth = AuthService();
 
@@ -63,10 +66,16 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
     });
 
     if (_formKey.currentState!.validate()) {
+      setState(() {
+        isLoading=true;
+      });
       final Map<String, dynamic>? data =
           ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
       if (data?['email'] == null) {
+        setState(() {
+          isLoading=false;
+        });
         ErrorDialog.showErrorDialog(
             context, "Missing em required information.");
         return;
@@ -96,8 +105,11 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
           delivery: data?['qna6_delivery'],
         );
 
-        Navigator.pushReplacementNamed(context, '/login');
-      }
+          setState(() {
+            isLoading = false;
+          });
+        Navigator.pushReplacementNamed(context, '/login');}
+
     }
   }
 
@@ -106,7 +118,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
     final Map<String, dynamic>? data =
         ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
 
-    return Scaffold(
+    return isLoading? const Loading(): Scaffold(
       body: SafeArea(
         child: Container(
           padding:
@@ -231,7 +243,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                           else
                             const Text(
                               "Food Safety License Uploaded successfully!",
-                              style: const TextStyle(
+                              style:  TextStyle(
                                 fontStyle: FontStyle.italic,
                                 fontFamily: 'poppins',
                                 fontSize: 10,

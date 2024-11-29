@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:merokhetapp/services/auth.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_next_button.dart';
+import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_outlined_back.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/questionnaire_header.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/questions.dart';
 
@@ -123,12 +124,11 @@ class Questionnaire1state extends State<Questionnaire1> {
                       },
                       buttonColor: const Color(0xFF4B6F39)),
                   const SizedBox(height: 10),
-                  CustomNextButton(
+                  CustomOutlinedBack(
                       text: "Back",
                       onPressed: () {
                         Navigator.pushReplacementNamed(context, '/home');
-                      },
-                      buttonColor: const Color(0xFF4B6F39))
+                      })
                 ],
               )
             ],

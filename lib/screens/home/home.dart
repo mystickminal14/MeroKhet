@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_outlined_back.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/questionnaire_header.dart';
 import 'package:merokhetapp/widgets/custom_button.dart';
 import 'package:merokhetapp/widgets/icon_row_text.dart';
@@ -91,12 +92,11 @@ class HomePage extends StatelessWidget {
                     const SizedBox(
                       height: 5,
                     ),
-                    CustomButton(
-                      text: "Get Started with Shopping",
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/consumer_registration');
-                      },
-                    ),
+
+                    CustomOutlinedBack(text: "Get Started with Shopping",
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/consumer_registration');
+                        })
                   ],
                 )
               ],
