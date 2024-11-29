@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:merokhetapp/navigation/navigation_flow.dart';
+import 'package:merokhetapp/resetpassword/forgotpassword.dart';
 import 'package:merokhetapp/screens/auth/consumer_registration.dart';
 import 'package:merokhetapp/screens/auth/farmer_auth/farmer_registration_page.dart';
 import 'package:merokhetapp/screens/auth/farmer_auth/farmer_verification_page.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       routes: {
-        '/': (context) => const FlashingPage(),
+        '/': (context) => const ForgetPassword(),
         '/login': (context) => const LoginPage(),
         '/navi': (context) => const NavigationFlow(),
         '/consumer_registration': (context) => const ConsumerRegistration(),
