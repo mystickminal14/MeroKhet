@@ -16,7 +16,7 @@ class _FlashingPageState extends State<FlashingPage> {
       Navigator.pushReplacementNamed(context, '/login');
     });
   }
-
+//made by charitra shrestha
   @override
   Widget build(BuildContext context) {
     return Scaffold(
