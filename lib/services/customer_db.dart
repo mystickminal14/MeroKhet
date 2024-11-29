@@ -14,6 +14,7 @@ class ConsumerDatabaseService {
     required String phone,
     required String password,
     required String role,
+    required String img,
   }) async {
     try {
       await consumerCollection.doc(uid).set({
@@ -21,7 +22,8 @@ class ConsumerDatabaseService {
         'email': email,
         'phone': phone,
         'role': role,
-        'password':password
+        'password':password,
+        'img':img
       });
 
       print("Consumer data successfully updated in Firestore.");

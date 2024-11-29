@@ -16,6 +16,7 @@ class FarmerDatabaseService {
     required String farmAccountName,
     required String license,
     required String foodSafety,
+    required String img,
     required Map<String, dynamic> farmerDetails,
   }) async {
     try {

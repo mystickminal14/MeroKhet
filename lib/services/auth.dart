@@ -1,23 +1,38 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import 'package:merokhetapp/model/user_model.dart';
-import 'package:merokhetapp/services/customer_db.dart';
-import 'package:merokhetapp/services/farmer_db.dart';
-import 'package:merokhetapp/services/user.dart';
 import 'package:merokhetapp/utils/error_dialog.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  UserModel? _userFromFirebaseUser(User? user) {
-    return user != null
-        ? UserModel(uid: user.uid , email: '', password: '', role: '')
+  UserModel? _userFromFirebaseUser(User? user, Map<String, dynamic>? userData) {
+    return user != null && userData != null
+        ? UserModel(
+      uid: user.uid,
+      email: userData['email'] ?? '',
+      password: '',
+      role: userData['role'] ?? '',
+    )
         : null;
   }
 
   Stream<UserModel?> get user {
-    return _auth.authStateChanges().map(_userFromFirebaseUser);
+    return _auth.authStateChanges().asyncMap((User? user) async {
+      if (user == null) return null;
+
+      // Fetch user data from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      if (!userDoc.exists) return null;
+
+      Map<String, dynamic> userData = userDoc.data() as Map<String, dynamic>;
+      return _userFromFirebaseUser(user, userData);
+    });
   }
 
   Future registerWithEmailAndPassword(
@@ -45,7 +60,7 @@ class AuthService {
         return;
       }
 
-      // Register the user
+      // Register user in Firebase Auth
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -57,9 +72,19 @@ class AuthService {
         return;
       }
 
-      // Update data in Firestore based on role
+      // Prepare Firestore data
+      Map<String, dynamic> userData = {
+        'fullName': fullName,
+        'email': email,
+        'phone': phone,
+        'role': role,
+      };
+
       if (role == 'farmer') {
-        Map<String, dynamic> farmerDetails = {
+        userData.addAll({
+          'farmAccountName': farmAccountName ?? '',
+          'license': license ?? '',
+          'foodSafety': foodSafety ?? '',
           'situation': situation ?? '',
           'business': business ?? '',
           'productFocused': productFocused ?? '',
@@ -67,45 +92,23 @@ class AuthService {
           'package': package ?? '',
           'region': region ?? '',
           'delivery': delivery ?? '',
-        };
-
-        await FarmerDatabaseService(uid: user.uid).updateFarmerData(
-          fullName: fullName,
-          email: email,
-          phone: phone,
-          role: role,
-          farmAccountName: farmAccountName ?? '',
-          license: license ?? '',
-          foodSafety: foodSafety ?? '',
-          farmerDetails: farmerDetails,
-        );
-      } else if (role == 'consumer') {
-        // Update consumer-specific data
-        await ConsumerDatabaseService(uid: user.uid).updateCustomerData(
-          fullName: fullName,
-          email: email,
-          phone: phone,
-          password: password,
-          role: role,
-        );
+        });
       }
 
-      // Update generic user data
-      await UserDatabaseService(uid: user.uid).updateUserData(
-        email: email,
-        password: password,
-        role: role,
-      );
+      // Save user data to Firestore
+      await FirebaseFirestore.instance.collection('users').doc(user.uid).set(userData);
 
       print("User registered successfully as $role: ${user.uid}");
     } catch (e) {
-      ErrorDialog.showErrorDialog(context, "Error: $e");
+      ErrorDialog.showErrorDialog(context, "Error during registration: ${e.toString()}");
     }
   }
 
+  /// Logs in a user with email and password.
   Future<UserModel?> logInWithEmailAndPassword(
       BuildContext context, String email, String password) async {
     try {
+      // Step 1: Authenticate with Firebase
       UserCredential result = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -117,11 +120,29 @@ class AuthService {
         return null;
       }
 
-      print("User logged in: ${user.uid}");
-      return _userFromFirebaseUser(user);
+      // Step 2: Fetch user details from Firestore
+      DocumentSnapshot userDoc = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid)
+          .get();
+
+      if (!userDoc.exists) {
+        ErrorDialog.showErrorDialog(context, "User not found in database.");
+        return null;
+      }
+
+      // Map Firestore data to `UserModel`
+      Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+      return _userFromFirebaseUser(user, data);
     } catch (e) {
-      ErrorDialog.showErrorDialog(context, "Error: $e");
+      ErrorDialog.showErrorDialog(context, "Error during login: ${e.toString()}");
       return null;
     }
+  }
+
+  /// Logs out the currently authenticated user.
+  Future<void> signOut() async {
+    await _auth.signOut();
+    print("User signed out successfully.");
   }
 }
