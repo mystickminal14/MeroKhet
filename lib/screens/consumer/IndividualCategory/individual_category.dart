@@ -19,7 +19,7 @@ class _IndividualCategoryState extends State<IndividualCategory> {
           width: double.infinity,
           child: const Column(
             children: [
-              CustomHeaderDash(title: 'Categories'),
+              CustomHeaderDash(title: 'Categories', route: '/categories',),
               SizedBox(height: 20),
               Expanded(
                 // Ensures the grid takes up remaining space

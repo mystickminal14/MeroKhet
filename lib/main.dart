@@ -59,7 +59,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/customer_dashboard': (context) => const ConsumerDashboard(),
         '/categories': (context) => const Categories(),
-        '/individual_category': (context) => const Categories(),
+        '/individual_category': (context) => const IndividualCategory(),
 
       },
     );

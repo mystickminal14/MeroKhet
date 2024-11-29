@@ -20,7 +20,7 @@ class _CategoriesState extends State<Categories> {
           child: const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CustomHeaderDash(title: 'Categories'),
+              CustomHeaderDash(title: 'Categories', route: '/customer_dashboard',),
               SizedBox(height: 20),
               Expanded(
                 child: Padding(

@@ -3,6 +3,7 @@ import 'package:merokhetapp/widgets/BestDeals/best_deals.dart';
 import 'package:merokhetapp/widgets/BestDeals/list_view_best_deals.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/categories_head.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/custom_categories.dart';
+import 'package:merokhetapp/widgets/DashboardLayouts/dash_header.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/header_dash.dart';
 
 class ConsumerDashboard extends StatefulWidget {
@@ -24,7 +25,7 @@ class _ConsumerDashboardState extends State<ConsumerDashboard> {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: ListView(
             children: [
-              const CustomHeaderDash(title: 'Dashboard'),
+              const HeaderDash(title: 'Dashboard'),
               const SizedBox(height: 5),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8),

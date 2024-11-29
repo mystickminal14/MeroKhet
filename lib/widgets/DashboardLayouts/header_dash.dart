@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomHeaderDash extends StatefulWidget {
-  final String title;
-  const CustomHeaderDash({super.key, required this.title});
+  final String title,route;
+  const CustomHeaderDash({super.key, required this.title, required this.route});
 
   @override
   State<CustomHeaderDash> createState() => _CustomHeaderDashState();
@@ -37,10 +37,13 @@ class _CustomHeaderDashState extends State<CustomHeaderDash> {
             const SizedBox(
               width: 4,
             ),
-            const CircleAvatar(
-              foregroundImage: AssetImage('assets/F.jpg'),
-              maxRadius: 20,
-            ),
+            IconButton(onPressed: (){
+              Navigator.pushReplacementNamed(context, widget.route);
+    }, icon:const Icon(Icons.arrow_back_ios_new_sharp))
+            // const CircleAvatar(
+            //   foregroundImage: AssetImage('assets/F.jpg'),
+            //   maxRadius: 20,
+            // ),
           ],
         ),
         const Padding(

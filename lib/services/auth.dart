@@ -1,165 +1,101 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:merokhetapp/model/consumer.model.dart';
-import 'package:merokhetapp/model/farmer_detail.dart';
-import 'package:merokhetapp/model/farmer_model..dart';
+
+import 'package:merokhetapp/model/user_model.dart';
 import 'package:merokhetapp/services/customer_db.dart';
 import 'package:merokhetapp/services/farmer_db.dart';
+import 'package:merokhetapp/services/user.dart';
 import 'package:merokhetapp/utils/error_dialog.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  Consumer? _userFromFirebaseUser(User? user) {
+  UserModel? _userFromFirebaseUser(User? user) {
     return user != null
-        ? Consumer(
-            uid: user.uid,
-            fullName: '',
-            email: '',
-            phoneNo: '',
-            password: '',
-            role: '')
+        ? UserModel(uid: user.uid , email: '', password: '', role: '')
         : null;
   }
 
-  Farmer? _userFromFirebaseUserFarmer(User? user) {
-    return user != null
-        ? Farmer(
-            uid: user.uid,
-            fullName: '',
-            email: '',
-            phoneNo: '',
-            password: '',
-            role: '',
-            farmAccountName: '',
-            license: '',
-            foodSafety: '')
-        : null;
-  }
-
-  Stream<Consumer?> get user {
+  Stream<UserModel?> get user {
     return _auth.authStateChanges().map(_userFromFirebaseUser);
   }
 
-  Stream<Farmer?> get farmer {
-    return _auth.authStateChanges().map(_userFromFirebaseUserFarmer);
-  }
-
-  // Register with email and password
   Future registerWithEmailAndPassword(
-    BuildContext context,
-    String email,
-    String password,
-    String fullName,
-    String phone,
-    String role, {
-    String? farmAccountName,
-    String? license,
-    String? foodSafety,
-    String? situation,
-    String? business,
-    String? productFocused,
-    String? productNature,
-    String? package,
-    String? region,
-    String? delivery,
-  }) async {
+      BuildContext context,
+      String email,
+      String password,
+      String fullName,
+      String phone,
+      String role, {
+        String? farmAccountName,
+        String? license,
+        String? foodSafety,
+        String? situation,
+        String? business,
+        String? productFocused,
+        String? productNature,
+        String? package,
+        String? region,
+        String? delivery,
+      }) async {
     try {
-      print('Email: $email');
-      print('Password: $password');
-      print('Full Name: $fullName');
-      print('Phone: $phone');
-      print('Role: $role');
+      // Validate role
+      if (role != 'farmer' && role != 'consumer') {
+        ErrorDialog.showErrorDialog(context, "Invalid role specified.");
+        return;
+      }
 
-      // Print optional parameters
-      print('Farm Account Name: ${farmAccountName ?? "Not provided"}');
-      print('License: ${license ?? "Not provided"}');
-      print('Food Safety: ${foodSafety ?? "Not provided"}');
-      print('Situation: ${situation ?? "Not provided"}');
-      print('Business: ${business ?? "Not provided"}');
-      print('Product Focused: ${productFocused ?? "Not provided"}');
-      print('Product Nature: ${productNature ?? "Not provided"}');
-      print('Package: ${package ?? "Not provided"}');
-      print('Region: ${region ?? "Not provided"}');
-      print('Delivery: ${delivery ?? "Not provided"}');
+      // Register the user
       UserCredential result = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = result.user;
-      print(user);
+
       if (user == null) {
-        ErrorDialog.showErrorDialog(
-            context, "Registration failed. Please try again.");
+        ErrorDialog.showErrorDialog(context, "Registration failed.");
         return;
       }
 
+      // Update data in Firestore based on role
       if (role == 'farmer') {
-
-        Farmer farmer = Farmer(
-          uid: user.uid,
-          fullName: fullName,
-          email: email,
-          phoneNo: phone,
-          password: password,
-          role: role,
-          farmAccountName: farmAccountName ?? '',
-          license: license ?? '',
-          foodSafety: foodSafety ?? '',
-
-        );
-        FarmerDetails farmerDetails = FarmerDetails(
-          farmerUid: user.uid,
-          situation: situation,
-          business: business,
-          productFocused: productFocused,
-          productNature: productNature,
-          package: package,
-          region: region ,
-          delivery: delivery,
-
-        );
+        Map<String, dynamic> farmerDetails = {
+          'situation': situation ?? '',
+          'business': business ?? '',
+          'productFocused': productFocused ?? '',
+          'productNature': productNature ?? '',
+          'package': package ?? '',
+          'region': region ?? '',
+          'delivery': delivery ?? '',
+        };
 
         await FarmerDatabaseService(uid: user.uid).updateFarmerData(
           fullName: fullName,
           email: email,
-          password: password,
           phone: phone,
           role: role,
           farmAccountName: farmAccountName ?? '',
           license: license ?? '',
           foodSafety: foodSafety ?? '',
-          situation: situation ?? '',
-          business: business ?? '',
-          productFocused: productFocused ?? '',
-          productNature: productNature ?? '',
-          package: package ?? '',
-          region: region ?? '',
-          delivery: delivery ?? '',
-
+          farmerDetails: farmerDetails,
         );
       } else if (role == 'consumer') {
-        Consumer consumer = Consumer(
-          uid: user.uid,
+        // Update consumer-specific data
+        await ConsumerDatabaseService(uid: user.uid).updateCustomerData(
           fullName: fullName,
           email: email,
-          phoneNo: phone,
-          password: password,
-          role: role,
-        );
-
-        await ConsumerDatabaseService(uid: user.uid).updateUserData(
-          fullName: fullName,
-          email: email,
-          password: password,
           phone: phone,
+          password: password,
           role: role,
         );
-      } else {
-        ErrorDialog.showErrorDialog(context,
-            "Invalid role specified. Please choose 'farmer' or 'consumer'.");
-        return;
       }
+
+      // Update generic user data
+      await UserDatabaseService(uid: user.uid).updateUserData(
+        email: email,
+        password: password,
+        role: role,
+      );
 
       print("User registered successfully as $role: ${user.uid}");
     } catch (e) {
@@ -167,7 +103,7 @@ class AuthService {
     }
   }
 
-  Future<Consumer?> logInWithEmailAndPassword(
+  Future<UserModel?> logInWithEmailAndPassword(
       BuildContext context, String email, String password) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
