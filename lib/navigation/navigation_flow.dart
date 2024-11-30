@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:merokhetapp/screens/consumer/categories.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
-import 'package:merokhetapp/screens/consumer/my_account.dart';
+import 'package:merokhetapp/screens/consumer/consumer_account.dart';
 import 'package:merokhetapp/screens/consumer/my_cart.dart';
 import 'package:merokhetapp/screens/consumer/my_orders.dart';
 
@@ -19,7 +19,7 @@ class _NavigationFlowState extends State<NavigationFlow> {
     const MyCart(),
     const ConsumerDashboard(),
     const MyOrders(),
-    const MyAccount()
+    const ConsumerAccount()
   ];
   @override
   Widget build(BuildContext context) {
