@@ -2,13 +2,14 @@ import 'package:flutter/material.dart';
 
 class CustomFileUpload extends StatefulWidget {
   final String label, labelText,upload;
+  final double? height;
   final VoidCallback onPressed;
 
   const CustomFileUpload({
     super.key,
     required this.label,
     required this.onPressed,
-    required this.labelText, required this.upload,
+    required this.labelText, required this.upload, required this.height,
   });
 
   @override
@@ -45,6 +46,7 @@ class _CustomFileUploadState extends State<CustomFileUpload> {
             foregroundColor: Colors.black,
             minimumSize: const Size(double.infinity, 50),
             backgroundColor: Colors.white,
+            fixedSize: Size(double.infinity, widget.height as double),
             side: const BorderSide(
               color: Colors.black,
               width: 1.5,

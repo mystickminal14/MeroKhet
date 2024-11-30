@@ -188,7 +188,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                             "Upload your valid farmer license to verify your farming operations.",
                         onPressed:
                             uploadLicense, // Call the upload function here
-                        label: "Farmer License",
+                        label: "Farmer License", height: 40,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -224,7 +224,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                             "Upload your food safety certification to ensure compliance with safety standards.",
                         onPressed:
                             uploadFoodLicense, // Call the upload function here
-                        label: "Food Safety License",
+                        label: "Food Safety License", height: 40,
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.start,

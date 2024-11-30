@@ -1,7 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/navigation/farmer_navigation_flow.dart';
+import 'package:merokhetapp/screens/auth/fingerprint_auth.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/emailverification.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/forgotpassword.dart';
+import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
 import 'package:merokhetapp/screens/wrapper.dart';
 import 'firebase_options.dart';
 import 'package:merokhetapp/navigation/navigation_flow.dart';
