@@ -2,11 +2,13 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:merokhetapp/model/user_model.dart';
 import 'package:merokhetapp/widgets/custom_button.dart';
 import 'package:merokhetapp/widgets/custom_file_upload_btn.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/custom_form_field.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/drop_down.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/veg_header.dart';
+import 'package:provider/provider.dart';
 
 class AddVegetables extends StatefulWidget {
   const AddVegetables({super.key});
@@ -48,6 +50,8 @@ class _AddVegetablesState extends State<AddVegetables> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
+
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -122,6 +126,21 @@ class _AddVegetablesState extends State<AddVegetables> {
                               line: 1,
                             ),
                           ],
+                        ),
+                        CustomFormField(
+                          label: 'Discount percentage',
+                          hint: 'Discount Price',
+                          helperText: '',
+                          onChanged: (value) {
+                            setState(() {
+                              price=value;
+                            });
+                          },
+                          wid: 1,
+                          type: const TextInputType.numberWithOptions(
+                            decimal: true,
+                          ),
+                          line: 1,
                         ),
                         const SizedBox(
                           height: 5,

@@ -207,11 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                                               .logInWithEmailAndPassword(
                                                   context, email, pass);
                                           if (result == null) {
-                                            ShowAlert.showAlert(
-                                              context,
-                                              "Login falied! Please try again!",
-                                              AlertType.error,
-                                            );
+
                                             setState(() {
                                               isLoading = false;
                                             });
@@ -220,7 +216,7 @@ class _LoginPageState extends State<LoginPage> {
                                               isLoading = false;
                                             });
                                             Navigator.pushNamed(
-                                                context, '/navi');
+                                                context, '/wrapper');
                                           }
                                         }
                                       })

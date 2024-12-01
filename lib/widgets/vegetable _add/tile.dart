@@ -12,6 +12,7 @@ class _CustomTilesState extends State<CustomTiles> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: null,
       width:MediaQuery.of(context).size.width / 2.1,
       child: Card(
         elevation: 4,

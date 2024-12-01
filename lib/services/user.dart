@@ -6,7 +6,7 @@ class UserDatabaseService {
 
   // References to the farmer collections
   final CollectionReference user =
-      FirebaseFirestore.instance.collection('users');
+  FirebaseFirestore.instance.collection('users');
 
   // Update farmer data in Firestore
   Future<void> updateUserData({

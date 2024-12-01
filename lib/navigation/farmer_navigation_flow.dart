@@ -17,7 +17,7 @@ class FarmerNavigationFlow extends StatefulWidget {
 }
 
 class _FarmerNavigationFlowState extends State<FarmerNavigationFlow> {
-  int myIndex = 3;
+  int myIndex = 2;
   List screenList = [
     const FarmerDashboard(),
     const MyCart(),
