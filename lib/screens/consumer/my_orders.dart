@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/screens/consumer/checkout_page.dart';
 
 class MyOrders extends StatefulWidget {
   const MyOrders({super.key});
@@ -40,7 +41,7 @@ class _MyCartState extends State<MyOrders> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text('My Cart')),
+        title: const Center(child: Text('My Cart')),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Image.asset('assets/Leaf.png', fit: BoxFit.cover),
@@ -66,7 +67,7 @@ class _MyCartState extends State<MyOrders> {
                   return Card(
                     margin: const EdgeInsets.only(bottom: 16),
                     child: ListTile(
-                      leading: Icon(Icons.shopping_cart),
+                      leading: const Icon(Icons.shopping_cart),
                       title: Text(cartItems[index]['name']),
                       subtitle: Text("Rs. ${cartItems[index]['price']}"),
                       trailing: Row(
@@ -90,13 +91,14 @@ class _MyCartState extends State<MyOrders> {
             ),
             const Divider(),
             Text(
-              "Total: Rs. ${totalPrice}",
+              "Total: Rs. $totalPrice",
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // Checkout logic can be added here
+                // Navigate to the Checkout page
+                Navigator.pushNamed(context, '/checkout');
               },
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white, backgroundColor: Colors.green,

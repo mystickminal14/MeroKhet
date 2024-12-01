@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:merokhetapp/widgets/BestDeals/best_deals.dart';
 import 'package:merokhetapp/widgets/BestDeals/list_view_best_deals.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/categories_head.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/custom_categories.dart';
@@ -13,11 +12,9 @@ class ConsumerDashboard extends StatefulWidget {
 }
 
 class _ConsumerDashboardState extends State<ConsumerDashboard> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SafeArea(
         child: Container(
           width: double.infinity,

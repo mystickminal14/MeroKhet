@@ -5,13 +5,11 @@ class CustomButton extends StatelessWidget {
   final VoidCallback onPressed;
   final Color buttonColor;
 
-
   const CustomButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.buttonColor = const Color(0xFF4B6F39), // Default color
-
   });
 
   @override
@@ -19,12 +17,12 @@ class CustomButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ButtonStyle(
-        foregroundColor: const MaterialStatePropertyAll(Colors.white),
-        minimumSize: const MaterialStatePropertyAll(
+        foregroundColor: const WidgetStatePropertyAll(Colors.white),
+        minimumSize: const WidgetStatePropertyAll(
           Size(double.infinity, 50),
         ),
-        backgroundColor: MaterialStatePropertyAll(buttonColor),
-        shape: const MaterialStatePropertyAll(
+        backgroundColor: WidgetStatePropertyAll(buttonColor),
+        shape: const WidgetStatePropertyAll(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(5)),
           ),
@@ -34,7 +32,7 @@ class CustomButton extends StatelessWidget {
         text,
         style: const TextStyle(
           fontSize: 16,
-          color:Colors.white,
+          color: Colors.white,
           fontFamily: 'poppins',
           fontWeight: FontWeight.w400,
         ),

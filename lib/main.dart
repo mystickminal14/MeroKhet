@@ -10,12 +10,12 @@ import 'package:merokhetapp/screens/auth/farmer_auth/questionnaire_3.dart';
 import 'package:merokhetapp/screens/auth/farmer_auth/questionnaire_4.dart';
 import 'package:merokhetapp/screens/auth/farmer_auth/questionnaire_6.dart';
 import 'package:merokhetapp/screens/auth/login_page.dart';
-import 'package:merokhetapp/screens/consumer/IndividualCategory/individual_category.dart';
 import 'package:merokhetapp/screens/consumer/categories.dart';
+import 'package:merokhetapp/screens/consumer/checkout_page.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
+import 'package:merokhetapp/screens/consumer/payment.dart';
 import 'package:merokhetapp/screens/flashing_page.dart';
 import 'package:merokhetapp/screens/home/home.dart';
-
 
 void main() {
   runApp(const MyApp());
@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-
       routes: {
         '/': (context) => const FlashingPage(),
         '/login': (context) => const LoginPage(),
@@ -51,7 +50,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => const HomePage(),
         '/customer_dashboard': (context) => const ConsumerDashboard(),
         '/categories': (context) => const Categories(),
-
+        '/checkout': (context) => const CheckOutPage(),
+        '/payment': (context) => const PaymentPage()
       },
     );
   }

@@ -7,7 +7,6 @@ import 'package:merokhetapp/widgets/QuestionnaireLayouts/questionnaire_header.da
 import 'package:merokhetapp/widgets/custom_file_upload_btn.dart';
 import 'package:merokhetapp/widgets/custom_text_field.dart';
 
-
 class FarmerVerificationPage extends StatefulWidget {
   const FarmerVerificationPage({super.key});
 
@@ -57,7 +56,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
       body: SafeArea(
         child: Container(
           padding:
-          const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
+              const EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 10),
           width: double.infinity,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -105,7 +104,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                     CustomFileUpload(
                       upload: "Upload farmer license",
                       labelText:
-                      "Upload your valid farmer license to verify your farming operations.",
+                          "Upload your valid farmer license to verify your farming operations.",
                       onPressed: uploadLicense, // Call the upload function here
                       label: "Farmer License",
                     ),
@@ -124,9 +123,9 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                             ),
                           )
                         else
-                         const Text(
+                          const Text(
                             "Farmer License Uploaded successfully!",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontStyle: FontStyle.italic,
                               fontFamily: 'poppins',
                               fontSize: 10,
@@ -140,8 +139,9 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                     CustomFileUpload(
                       upload: "Upload food safety license",
                       labelText:
-                      "Upload your food safety certification to ensure compliance with safety standards.",
-                      onPressed: uploadFoodLicense, // Call the upload function here
+                          "Upload your food safety certification to ensure compliance with safety standards.",
+                      onPressed:
+                          uploadFoodLicense, // Call the upload function here
                       label: "Food Safety License",
                     ),
                     Row(
@@ -159,9 +159,9 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                             ),
                           )
                         else
-                        const  Text(
+                          const Text(
                             "Food Safety License Uploaded successfully!",
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontStyle: FontStyle.italic,
                               fontFamily: 'poppins',
                               fontSize: 10,
