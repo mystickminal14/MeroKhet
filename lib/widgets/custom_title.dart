@@ -30,7 +30,7 @@ class CustomTitle extends StatelessWidget {
            child:Text(
              subTitle,
              style: const TextStyle(
-               fontFamily: 'Poppins',
+               fontFamily: 'poppins',
                fontWeight: FontWeight.w400,
              ),
            ),

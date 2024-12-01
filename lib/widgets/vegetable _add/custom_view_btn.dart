@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 
-class CustomButton extends StatelessWidget {
+class CustomViewButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
   final Color buttonColor;
-  final int? width;
+  final double width;
+  final IconData? icon;
 
-
-  const CustomButton({
+  const CustomViewButton({
     super.key,
     required this.text,
     required this.onPressed,
-    this.buttonColor = const Color(0xFF4B6F39),  this.width, // Default color
-
+    this.buttonColor = const Color(0xFF4B6F39),
+    this.width = 80.0,
+    this.icon,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton(
+    return ElevatedButton.icon(
       onPressed: onPressed,
       style: ButtonStyle(
         foregroundColor: const MaterialStatePropertyAll(Colors.white),
-        minimumSize: const MaterialStatePropertyAll(
-          Size(double.infinity, 50),
+        minimumSize: MaterialStatePropertyAll(
+          Size(width, 45),
         ),
         backgroundColor: MaterialStatePropertyAll(buttonColor),
         shape: const MaterialStatePropertyAll(
@@ -31,11 +32,18 @@ class CustomButton extends StatelessWidget {
           ),
         ),
       ),
-      child: Text(
+      icon: icon != null
+          ? Icon(
+        icon,
+        color: Colors.white,
+        size: 18
+      )
+          : const SizedBox.shrink(),
+      label: Text(
         text,
         style: const TextStyle(
-          fontSize: 16,
-          color:Colors.white,
+          fontSize: 14,
+          color: Colors.white,
           fontFamily: 'poppins',
           fontWeight: FontWeight.w400,
         ),

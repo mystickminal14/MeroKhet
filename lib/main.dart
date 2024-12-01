@@ -4,6 +4,7 @@ import 'package:merokhetapp/navigation/farmer_navigation_flow.dart';
 import 'package:merokhetapp/screens/auth/fingerprint_auth.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/emailverification.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/forgotpassword.dart';
+import 'package:merokhetapp/screens/consumer/view_vegetable.dart';
 import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
 import 'package:merokhetapp/screens/wrapper.dart';
 import 'firebase_options.dart';
@@ -48,13 +49,12 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       routes: {
-        '/': (context) => const FlashingPage(),
+        '/': (context) => const ViewVegetable(),
         '/flash': (context) => const FlashingPage(),
         '/login': (context) => const LoginPage(),
         '/navi': (context) => const NavigationFlow(),
         '/email_verify': (context) => const EmailVerification(),
         '/forget_pass': (context) => const ForgetPassword(),
-
         '/consumer_registration': (context) => const ConsumerRegistration(),
         '/farmer_register': (context) => const FarmerRegistrationPage(),
         '/farmer_verification': (context) => const FarmerVerificationPage(),
