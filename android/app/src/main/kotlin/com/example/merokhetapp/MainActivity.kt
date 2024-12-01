@@ -1,3 +1,5 @@
 package com.example.merokhetapp
 
-class MainActivity : FlutterFragmentActivity()
+import io.flutter.embedding.android.FlutterActivity
+
+class MainActivity: FlutterActivity()
