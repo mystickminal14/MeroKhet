@@ -102,9 +102,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
               // Price Details
               Padding(
                 padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text("Sub Total", style: TextStyle(fontSize: 16)),
                     Text("₹1035", style: TextStyle(fontSize: 16)),
                   ],
@@ -112,9 +112,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
               ),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text("Delivery", style: TextStyle(fontSize: 16)),
                     Text("₹0", style: TextStyle(fontSize: 16)),
                   ],
@@ -123,9 +123,9 @@ class _CheckOutPageState extends State<CheckOutPage> {
               const Divider(),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
-                child: Row(
+                child: const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
                       "Total",
                       style:
