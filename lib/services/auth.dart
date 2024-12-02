@@ -155,7 +155,6 @@ class AuthService {
         return null;
       }
 
-      // Map Firestore data to `UserModel`
       Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
       return _userFromFirebaseUser(user, data);
     } catch (e) {

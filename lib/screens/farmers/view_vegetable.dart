@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:merokhetapp/services/products.dart';
 import 'package:merokhetapp/widgets/custom_button.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/custom_view_btn.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/grid_recommended.dart';
@@ -6,13 +8,50 @@ import 'package:merokhetapp/widgets/vegetable%20_add/tile.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/veg_header.dart';
 
 class ViewVegetable extends StatefulWidget {
-  const ViewVegetable({super.key});
+  final String vegId;
+  const ViewVegetable({super.key, required this.vegId});
 
   @override
   State<ViewVegetable> createState() => _ViewVegetableState();
 }
 
 class _ViewVegetableState extends State<ViewVegetable> {
+  bool isLoading = true;
+  List<Map<String, dynamic>> vegetables = [];
+   // Member variable to store the ID
+  List<Map<String, dynamic>> farmerDatas = [];
+  List<Map<String, dynamic>> Categories = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    fetchVegetables();
+  }
+
+  Future<void> fetchVegetables() async {
+    try {
+
+      final data = await VegService().getVegetablesById(widget.vegId);
+      // final farmerData=await VegService().getFarmerByID(data[0]['farmer_id']);
+      // final cate = await VegService().getVegetablesByCategory(data[0]['category']);
+      // print(farmerData);
+      // print(cate);
+
+
+      setState(() {
+        vegetables = data;
+        // farmerDatas= farmerData;
+        // Categories=cate;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching vegetables: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
   final border = const OutlineInputBorder(
     borderSide: BorderSide(width: 1.5, color: Colors.black),
     borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -22,11 +61,31 @@ class _ViewVegetableState extends State<ViewVegetable> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+
+    return isLoading ?  vegetables.isEmpty // Check if data is empty
+        ? const Center(
+      child: Text(
+        "No data available",
+        style: TextStyle(
+          fontFamily: 'poppins',
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    )
+        : Container(
+        width: double.infinity,
+        padding: null,
+        child: const Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SpinKitSquareCircle(color: Color(0xff4B6F39), size: 50.0),
+          ],
+        )) : Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            const VegHeader(title: 'Mushroom', route: '/home'), // Header
+             VegHeader(title: vegetables[0]['name'], route: '/home'), // Header
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -50,9 +109,9 @@ class _ViewVegetableState extends State<ViewVegetable> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           // Vegetable Name
-                          const Text(
-                            'Button Mushrooms (White Mushrooms)',
-                            style: TextStyle(
+                           Text(
+                           vegetables[0]['name'],
+                            style: const TextStyle(
                               fontFamily: 'poppins',
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -69,9 +128,9 @@ class _ViewVegetableState extends State<ViewVegetable> {
                               Row(
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 children: [
-                                  const Text(
-                                    'Rs. 75',
-                                    style: TextStyle(
+                                   Text(
+                                     'Rs. ${vegetables[0]['price']}',
+                                    style:const  TextStyle(
                                       fontFamily: 'poppins',
                                       fontSize: 30,
                                       color: Colors.red,
@@ -137,9 +196,9 @@ class _ViewVegetableState extends State<ViewVegetable> {
                           const SizedBox(height: 10),
 
                           // Description
-                          const Text(
-                            'Button mushrooms are one of the most popular and versatile mushrooms. With their mild flavor and firm texture, they can be enjoyed raw in salads or cooked in a variety of dishes, such as stir-fries, soups, and pasta. These mushrooms are packed with essential nutrients like vitamin D, potassium, and antioxidants, making them a healthy addition to your diet.',
-                            style: TextStyle(
+                           Text(
+                          vegetables[0]['description']  ,
+                            style: const TextStyle(
                               fontFamily: 'poppins',
                               fontSize: 11,
                               fontWeight: FontWeight.w600,

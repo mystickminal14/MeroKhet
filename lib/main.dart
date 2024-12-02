@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           '/wrapper': (context) => const Wrapper(),
           '/': (context) => const FlashingPage(),
           '/flash': (context) => const FlashingPage(),
-
+          '/view_veg': (context) => const ViewVegetable(vegId: 'default_id'),
           '/login': (context) => const LoginPage(),
           '/navi': (context) => const NavigationFlow(),
           '/email_verify': (context) => const EmailVerification(),

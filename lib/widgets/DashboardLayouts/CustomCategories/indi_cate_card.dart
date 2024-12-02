@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
 class IndCateCard extends StatefulWidget {
-  final String text, img;
+  final String text, price, farmer, status, imgFarm;
+  final Image img; // Change this to a Widget to handle both Image types
   final VoidCallback onPressed;
+
   const IndCateCard({
     super.key,
     required this.text,
     required this.img,
+    required this.price,
+    required this.farmer,
+    required this.status,
     required this.onPressed,
+    required this.imgFarm,
   });
 
   @override
@@ -23,20 +29,14 @@ class _IndCateCardState extends State<IndCateCard> {
         elevation: 2,
         shadowColor: Colors.black,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(6), // Slightly rounded corners
+          borderRadius: BorderRadius.circular(6),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             ClipRRect(
               borderRadius: const BorderRadius.vertical(top: Radius.circular(6)),
-              child: Image.asset(
-                widget.img,
-                height: 120,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child: widget.img, // Use the passed widget here
             ),
             const SizedBox(height: 5),
             Padding(
@@ -52,13 +52,12 @@ class _IndCateCardState extends State<IndCateCard> {
                     ),
                   ),
                   const SizedBox(height: 4),
-                  // Price and Rating Row
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          Text(
+                          const Text(
                             'Rs.',
                             style: TextStyle(
                               fontSize: 11,
@@ -67,8 +66,8 @@ class _IndCateCardState extends State<IndCateCard> {
                             ),
                           ),
                           Text(
-                            '100',
-                            style: TextStyle(
+                            widget.price,
+                            style: const TextStyle(
                               fontSize: 13,
                               color: Colors.red,
                               fontFamily: 'Poppins-SemiBold',
@@ -76,11 +75,11 @@ class _IndCateCardState extends State<IndCateCard> {
                           ),
                         ],
                       ),
-                      Row(
+                      const Row(
                         children: [
                           Icon(Icons.star_rate_outlined, size: 12),
                           Text(
-                            '4.3',
+                             '0',
                             style: TextStyle(
                               fontSize: 10,
                               fontFamily: 'Poppins-SemiBold',
@@ -91,20 +90,19 @@ class _IndCateCardState extends State<IndCateCard> {
                     ],
                   ),
                   const SizedBox(height: 4),
-                  // Farm Info Row
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Row(
                         children: [
-                          CircleAvatar(
+                          const CircleAvatar(
                             foregroundImage: AssetImage('assets/F.jpg'),
-                            maxRadius: 8, // Smaller avatar
+                            maxRadius: 8,
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
-                            'James Farm',
-                            style: TextStyle(
+                            widget.farmer,
+                            style: const TextStyle(
                               fontSize: 9,
                               fontFamily: 'Poppins-SemiBold',
                             ),
@@ -112,8 +110,8 @@ class _IndCateCardState extends State<IndCateCard> {
                         ],
                       ),
                       Text(
-                        '5kg sold',
-                        style: TextStyle(
+                        widget.status,
+                        style: const TextStyle(
                           fontSize: 9,
                           fontFamily: 'Poppins-SemiBold',
                         ),

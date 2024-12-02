@@ -24,7 +24,7 @@ class _IndividualCategoryState extends State<IndividualCategory> {
               Expanded(
                 // Ensures the grid takes up remaining space
                 child: SingleChildScrollView(
-                  child: IndividualCategoryGrid(),
+                  // child: IndividualCategoryGrid(),
                 ),
               ),
             ],

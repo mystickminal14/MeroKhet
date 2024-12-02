@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 
-class CustomCard extends StatefulWidget {
-  const CustomCard({super.key});
+class CustomCard extends StatelessWidget {
+  final Image img;
+  final String price;
+  final String discounted;
+  final VoidCallback? onTap;
 
-  @override
-  State<CustomCard> createState() => _CustomCardState();
-}
+  const CustomCard({
+    super.key,
+    required this.img,
+    required this.price,
+    required this.discounted,
+    this.onTap,
+  });
 
-class _CustomCardState extends State<CustomCard> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: onTap ?? () {}, // Default no-op if no onTap is provided
       child: Container(
         padding: const EdgeInsets.all(0),
         width: 120,
@@ -20,45 +26,50 @@ class _CustomCardState extends State<CustomCard> {
           elevation: 2,
           shadowColor: Colors.black,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(2),
+            borderRadius: BorderRadius.circular(8), // Slightly rounded corners
           ),
-          child: const Column(
+          child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(
                 children: [
-                  Image(
-                    image: AssetImage('assets/F.jpg'),
-                    fit: BoxFit.cover,
-                    width: 120,
-                    height: 78,
+                  ClipRRect(
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(8),
+                      topRight: Radius.circular(8),
+                    ),
+                    child: img,
                   ),
                 ],
               ),
               Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8,vertical: 1),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-
-                  Text(
-                    "Rs. 220 per kg",
-                    style: TextStyle(
-                      fontFamily: 'poppins-semi',
-                      fontSize: 7,
-                      decoration: TextDecoration.lineThrough,
-                      decorationColor:
-                          Colors.red, // Changes the color of the line
-                      decorationThickness:
-                          2.0, // Changes the thickness of the line
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Rs. $price per kg",
+                      style: const TextStyle(
+                        fontFamily: 'poppins',
+                        fontSize: 10,
+                        decoration: TextDecoration.lineThrough,
+                        decorationColor: Colors.red,
+                        decorationThickness: 1.5,
+                        color: Colors.grey,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Rs. 180 per kg",
-                    style: TextStyle(fontFamily: 'poppins-semi', fontSize: 8),
-                  )
-                ]),
-              )
+                    const SizedBox(height: 2),
+                    Text(
+                      "Rs. $discounted per kg",
+                      style: const TextStyle(
+                        fontFamily: 'poppins',
+                        fontSize: 10,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
