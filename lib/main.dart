@@ -13,6 +13,7 @@ import 'package:merokhetapp/screens/auth/login_page.dart';
 import 'package:merokhetapp/screens/consumer/categories.dart';
 import 'package:merokhetapp/screens/consumer/checkout_page.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
+import 'package:merokhetapp/screens/consumer/edit_profile.dart';
 import 'package:merokhetapp/screens/consumer/payment.dart';
 import 'package:merokhetapp/screens/flashing_page.dart';
 import 'package:merokhetapp/screens/home/home.dart';
@@ -51,7 +52,8 @@ class MyApp extends StatelessWidget {
         '/customer_dashboard': (context) => const ConsumerDashboard(),
         '/categories': (context) => const Categories(),
         '/checkout': (context) => const CheckOutPage(),
-        '/payment': (context) => const PaymentPage()
+        '/payment': (context) => const PaymentPage(),
+        '/editprofile': (context) => const EditProfile()
       },
     );
   }

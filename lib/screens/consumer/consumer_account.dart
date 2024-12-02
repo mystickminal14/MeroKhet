@@ -106,7 +106,9 @@ class _ConsumerAccountState extends State<ConsumerAccount> {
                     ],
                   ),
                   const SizedBox(height: 20),
-                  _buildListTile(Icons.person, 'Update Profile'),
+                  GestureDetector(
+                      onTap: () {},
+                      child: _buildListTile(Icons.person, 'Update Profile')),
                   _buildListTile(Icons.inventory, 'My Products'),
                   _buildListTile(Icons.help, 'Help and Support'),
                   _buildListTile(Icons.settings, 'Setting'),
@@ -139,12 +141,19 @@ class _ConsumerAccountState extends State<ConsumerAccount> {
   }
 
   Widget _buildListTile(IconData icon, String title) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.grey[800]),
-      title: Text(title),
-      trailing:
-          Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[800]),
-      onTap: () {},
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, '/editprofile');
+      },
+      child: ListTile(
+        leading: Icon(icon, color: Colors.grey[800]),
+        title: Text(title),
+        trailing:
+            Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[800]),
+        onTap: () {
+          // You can handle actions here
+        },
+      ),
     );
   }
 }
