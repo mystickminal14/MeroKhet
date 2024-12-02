@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -25,7 +26,9 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
   bool isLoading=false;
   final picker = ImagePicker();
   final AuthService _auth = AuthService();
+  String _base64Image = "";
 
+  File? _image3;
   String error = '', error2 = '', farmName = '';
   String? nameErr = '';
   final _formKey = GlobalKey<FormState>();
@@ -56,6 +59,22 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
     } else {
       setState(() {
         error2 = "No image selected";
+      });
+    }
+  }
+  Future uploadImg() async {
+    final XFile? pickedImage2 =
+    await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage2 != null) {
+      final bytes = await pickedImage2.readAsBytes();
+      setState(() {
+        _image3 = File(pickedImage2.path);
+        _base64Image = base64Encode(bytes);
+        error = ''; // Clear any previous errors
+      });
+    } else {
+      setState(() {
+        error = "No image selected";
       });
     }
   }
@@ -93,6 +112,7 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
           data?['name'],
           data?['phone'],
           data?['role'],
+          _base64Image,
           farmAccountName: farmName,
           license: _image?.path,
           foodSafety: _image2?.path,
@@ -194,6 +214,43 @@ class _FarmerVerificationPageState extends State<FarmerVerificationPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           if (_image == null)
+                            Text(
+                              error,
+                              style: const TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'poppins',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.red,
+                              ),
+                            )
+                          else
+                            const Text(
+                              "Farmer License Uploaded successfully!",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontFamily: 'poppins',
+                                fontSize: 10,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.green,
+                              ),
+                            ),
+                        ],
+                      ),
+                      const SizedBox(height: 15),
+
+                      CustomFileUpload(
+                        upload: "Upload farm image",
+                        labelText:
+                        "Upload your valid farm image",
+                        onPressed:
+                        uploadImg, // Call the upload function here
+                        label: "Farm Image", height: 40,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          if (_image3 == null)
                             Text(
                               error,
                               style: const TextStyle(

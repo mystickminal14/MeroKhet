@@ -42,6 +42,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
     return StreamProvider<UserModel?>.value(
       value:AuthService().user,  
       initialData: null,
@@ -59,7 +60,8 @@ class MyApp extends StatelessWidget {
           '/flash': (context) => const FlashingPage(),
           '/view_veg': (context) => const ViewVegetable(vegId: 'default_id'),
           '/login': (context) => const LoginPage(),
-          '/navi': (context) => const NavigationFlow(),
+          '/navi': (context) =>  const NavigationFlow(ind: 2,),
+          '/cate': (context) =>  const NavigationFlow(ind: 0,),
           '/email_verify': (context) => const EmailVerification(),
           '/forget_pass': (context) => const ForgetPassword(),
           '/consumer_registration': (context) => const ConsumerRegistration(),
@@ -74,7 +76,7 @@ class MyApp extends StatelessWidget {
           '/home': (context) => const HomePage(),
           '/customer_dashboard': (context) => const ConsumerDashboard(),
           '/categories': (context) => const Categories(),
-          '/individual_category': (context) => const IndividualCategory(),
+
 
         },
       ),

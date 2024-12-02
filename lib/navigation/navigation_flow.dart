@@ -1,29 +1,40 @@
 import 'package:flutter/material.dart';
+
 import 'package:merokhetapp/screens/consumer/categories.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
 import 'package:merokhetapp/screens/consumer/my_account.dart';
 import 'package:merokhetapp/screens/consumer/my_cart.dart';
 import 'package:merokhetapp/screens/consumer/my_orders.dart';
+import 'package:merokhetapp/services/consumer_controller.dart';
 
 class NavigationFlow extends StatefulWidget {
-  const NavigationFlow({super.key});
+final int ind;
+  const NavigationFlow({super.key, required this.ind});
 
   @override
   State<NavigationFlow> createState() => _NavigationFlowState();
 }
 
 class _NavigationFlowState extends State<NavigationFlow> {
-  int myIndex = 2;
-  List screenList = [
+late int myIndex;
+  @override
+  void initState() {
+    super.initState();
+    myIndex = widget.ind; // Default index for Home
+  }
+
+
+  final List<Widget> screenList = [
     const Categories(),
-    const MyCart(),
-    const ConsumerDashboard(),
     const MyOrders(),
-    const MyAccount()
+    const ConsumerDashboard(),
+    const MyCart(),
+    const MyAccount(),
   ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return  Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {
           setState(() {
@@ -33,7 +44,6 @@ class _NavigationFlowState extends State<NavigationFlow> {
         iconSize: 30,
         type: BottomNavigationBarType.shifting,
         currentIndex: myIndex,
-        // Background color
         selectedItemColor: const Color(0xFF4B6F39), // Selected item color
         unselectedItemColor: Colors.black, // Unselected item color
         items: const [
@@ -43,7 +53,7 @@ class _NavigationFlowState extends State<NavigationFlow> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.payment),
-            label: "My Order",
+            label: "My Orders",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),

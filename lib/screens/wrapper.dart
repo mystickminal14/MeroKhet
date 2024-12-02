@@ -34,7 +34,7 @@ class _WrapperState extends State<Wrapper> {
       if (user.role == 'farmer') {
         return const FarmerNavigationFlow();
       } else if (user.role == 'consumer') {
-        return const NavigationFlow();
+        return const NavigationFlow( ind: 2);
       } else {
         return const FlashingPage();
       }

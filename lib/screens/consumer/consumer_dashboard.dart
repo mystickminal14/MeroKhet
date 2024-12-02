@@ -24,6 +24,7 @@ class _ConsumerDashboardState extends State<ConsumerDashboard> {
     super.initState();
     fetchVegetables();
   }
+
   Future<void> fetchVegetables() async {
     try {
       // Fetch data using the updated method
@@ -39,76 +40,79 @@ class _ConsumerDashboardState extends State<ConsumerDashboard> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return isLoading
+        ? const Center(
 
+        child: SpinKitSquareCircle(
+            color: Color(0xff4B6F39), size: 50.0))
+        :  Scaffold(
       body: SafeArea(
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Column(
-            
             children: [
               const HeaderDash(title: 'Dashboard'),
-             isLoading?  Container(
-                 width: double.infinity,
-                 padding: null,
-                 child: const Column(
-                   mainAxisAlignment: MainAxisAlignment.start,
-                   children: [
-                     SpinKitSquareCircle(color: Color(0xff4B6F39), size: 50.0),
-                   ],
-                 ))  :Expanded(
-               child: SingleChildScrollView(
-                 child: Column(
-                   children: [
-
-                     Padding(
-                       padding: const EdgeInsets.symmetric(horizontal: 8),
-                       child: Column(
-                         children: [
-                           Container(
-                             height: 130,
-                             color: Colors.black,
-                           ),
-                           const SizedBox(height: 15),
-                           const CustomCatHead(),
-                           const SizedBox(height: 15),
-                           const CustomCategories(),
-                           const SizedBox(height: 15),
-                           const Row(
-                             mainAxisAlignment: MainAxisAlignment.start,
-                             children: [
-                               Text(
-                                 "Best Deals",
-                                 style: TextStyle(fontFamily: 'poppins-semi'),
-                               )
-                             ],
-                           ),
-                           ListViewBestDeals(bestDeals: vegetables,),
-                           const SizedBox(height: 15),
-                           const Row(
-                             mainAxisAlignment: MainAxisAlignment.start,
-                             children: [
-                               Text(
-                                 "For You",
-                                 style: TextStyle(fontFamily: 'poppins-semi'),
-                               )
-                             ],
-                           ),
-                           const SizedBox(height: 10),
-                           SizedBox(
-                             height: MediaQuery.of(context).size.height * 0.5,
-                             child: ForYou(vegetables: vegetables,),
-                           ),
-                         ],
-                       ),
-                     )
-                   ],
-                 ),
-               ),
-             ),
+             Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
+                              child: Column(
+                                children: [
+                                  Container(
+                                    height: 130,
+                                    color: Colors.black,
+                                  ),
+                                  const SizedBox(height: 8),
+                                  const CustomCatHead(),
+                                  const SizedBox(height: 1),
+                                  const CustomCategories(),
+                                  const SizedBox(height: 15),
+                                  const Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Best Deals",
+                                        style: TextStyle(
+                                            fontFamily: 'poppins-semi'),
+                                      )
+                                    ],
+                                  ),
+                                  ListViewBestDeals(
+                                    bestDeals: vegetables,
+                                  ),
+                                  const SizedBox(height: 15),
+                                  const Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "For You",
+                                        style: TextStyle(
+                                            fontFamily: 'poppins-semi'),
+                                      )
+                                    ],
+                                  ),
+                                  const SizedBox(height: 10),
+                                  SizedBox(
+                                    height: MediaQuery.of(context).size.height *
+                                        0.5,
+                                    child: ForYou(
+                                      vegetables: vegetables,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
             ],
           ),
         ),

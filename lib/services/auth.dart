@@ -46,7 +46,9 @@ class AuthService {
       String password,
       String fullName,
       String phone,
-      String role, {
+
+      String role,
+      String? img,{
         String? farmAccountName,
         String? license,
         String? foodSafety,
@@ -106,7 +108,7 @@ class AuthService {
           email: email,
           phone: phone,
           password: password,
-          role: role,
+          role: role, img: img??"",
         );
       }
 
@@ -186,4 +188,27 @@ class AuthService {
       );
     }
   }
+  Future<void> logout(BuildContext context) async {
+    try {
+      await _auth.signOut();
+      print("User signed out successfully.");
+
+      // Optionally, you can navigate the user to a different screen after logging out.
+      // For example, navigate to the login screen:
+      Navigator.pushReplacementNamed(context, '/login');
+
+      ShowAlert.showAlert(
+        context,
+        "You have successfully logged out.",
+        AlertType.success,
+      );
+    } catch (e) {
+      ShowAlert.showAlert(
+        context,
+        "Error during logout: ${e.toString()}",
+        AlertType.error,
+      );
+    }
+  }
+
 }

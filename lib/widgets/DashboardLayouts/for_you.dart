@@ -3,9 +3,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:merokhetapp/screens/farmers/view_vegetable.dart';
-import 'package:merokhetapp/services/products.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/indi_cate_card.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class ForYou extends StatefulWidget {
   final List<Map<String, dynamic>> vegetables;
@@ -31,11 +29,9 @@ class _ForYouState extends State<ForYou> {
         itemCount: widget.vegetables.length,
         itemBuilder: (context, index) {
           final category = widget.vegetables[index];
-
           final vegetable = category['vegetable'] ?? {};
           final farmer = category['farmer'] ?? {};
           final base64Image = vegetable['image'] ?? '';
-
 
           Uint8List? imageBytes;
           if (base64Image.isNotEmpty) {
@@ -46,24 +42,35 @@ class _ForYouState extends State<ForYou> {
               imageBytes = null;
             }
           }
+
           return IndCateCard(
-            text: vegetable['name'] ?? '',
+            text: vegetable['name'] ?? 'Unknown Vegetable',
             img: Image.memory(
               imageBytes!,
               height: 120,
               width: double.infinity,
               fit: BoxFit.cover,
             ),
-            price: vegetable['price'] ?? 0.0,
+            price: vegetable['price']?.toString() ?? '0.0',
             farmer: farmer['farmAccountName'] ?? 'Unknown',
             status: 'In stock',
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => ViewVegetable(vegId: vegetable['id']),
-                ),
-              );
+              final vegetableId = vegetable['id']?.toString();
+              if (vegetableId != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ViewVegetable(vegId: vegetableId),
+                  ),
+                );
+              } else {
+                print("Error: Vegetable ID is null");
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Error: Unable to view vegetable details'),
+                  ),
+                );
+              }
             },
             imgFarm: vegetable['image'] ?? '',
           );

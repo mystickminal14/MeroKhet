@@ -21,7 +21,7 @@ class CustomCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(0),
         width: 120,
-        height: 100,
+
         child: Card(
           elevation: 2,
           shadowColor: Colors.black,
@@ -51,7 +51,7 @@ class CustomCard extends StatelessWidget {
                       "Rs. $price per kg",
                       style: const TextStyle(
                         fontFamily: 'poppins',
-                        fontSize: 10,
+                        fontSize: 9,
                         decoration: TextDecoration.lineThrough,
                         decorationColor: Colors.red,
                         decorationThickness: 1.5,
@@ -63,7 +63,7 @@ class CustomCard extends StatelessWidget {
                       "Rs. $discounted per kg",
                       style: const TextStyle(
                         fontFamily: 'poppins',
-                        fontSize: 10,
+                        fontSize: 9,
                         color: Colors.red,
                       ),
                     ),

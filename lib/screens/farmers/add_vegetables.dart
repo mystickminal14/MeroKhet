@@ -33,14 +33,15 @@ class _AddVegetablesState extends State<AddVegetables> {
   String discount = '';
   String? category;
   String total = '';
-   String discountPrice='';
+  String discountPrice = '';
   String error = '';
   String _base64Image = "";
 
   final _formKey = GlobalKey<FormState>();
   bool _isSubmitted = false;
   Future uploadImg() async {
-    final XFile? pickedImage2 = await picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedImage2 =
+        await picker.pickImage(source: ImageSource.gallery);
     if (pickedImage2 != null) {
       final bytes = await pickedImage2.readAsBytes();
       setState(() {
@@ -55,7 +56,6 @@ class _AddVegetablesState extends State<AddVegetables> {
     }
   }
 
-
   void calculateTotals() {
     double? priceValue = double.tryParse(price);
     double? stockValue = double.tryParse(stock);
@@ -66,7 +66,8 @@ class _AddVegetablesState extends State<AddVegetables> {
       setState(() {
         total = calculatedTotal.toStringAsFixed(2);
         if (discountValue != null) {
-          double calculatedDiscountPrice = calculatedTotal - (calculatedTotal * discountValue / 100);
+          double calculatedDiscountPrice =
+              calculatedTotal - (calculatedTotal * discountValue / 100);
           discountPrice = calculatedDiscountPrice.toStringAsFixed(2);
         } else {
           discountPrice = total;
@@ -79,6 +80,7 @@ class _AddVegetablesState extends State<AddVegetables> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     var user = Provider.of<UserModel?>(context);
@@ -248,7 +250,8 @@ class _AddVegetablesState extends State<AddVegetables> {
                                         price,
                                         stock,
                                         discount,
-                                        total,discountPrice,
+                                        total,
+                                        discountPrice,
                                         vegDesc,
                                         user!.uid,
                                       );
@@ -261,7 +264,7 @@ class _AddVegetablesState extends State<AddVegetables> {
                                       price = '';
                                       stock = '';
                                       discount = '';
-                                      total='';
+                                      total = '';
 
                                       vegDesc = '';
                                       ShowAlert.showAlert(

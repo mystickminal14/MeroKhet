@@ -32,7 +32,7 @@ class GridRecommended extends StatelessWidget {
         return CustomTiles(
           img: img,
           text: text,
-          price: price,
+          price: price, onPressed: () {  },
         );
       },
     );

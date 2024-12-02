@@ -11,26 +11,28 @@ class CustomCategories extends StatefulWidget {
 class _CustomCategoriesState extends State<CustomCategories> {
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
+    return const SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Row(
         children: [
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+               text: "Leafy Greens", img: "assets/Leaf.png"),
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+               text: "Root Veg", img: "assets/Leaf.png"),
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+               text: "Cruciferous", img: "assets/Leaf.png"),
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+               text: "Allium", img: "assets/Leaf.png"),
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+              text: "Legumes", img: "assets/Leaf.png"),
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+               text: "Tubers", img: "assets/Leaf.png"),
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+              text: "Squash Varieties", img: "assets/Leaf.png"),
           CategoryBlock(
-              onPressed: () {}, text: "Leafy Greens", img: "assets/Leaf.png"),
+             text: "Herbs and Spicy", img: "assets/Leaf.png"),
+          CategoryBlock(
+              text: "Mushrooms", img: "assets/Leaf.png"),
         ],
       ),
     );

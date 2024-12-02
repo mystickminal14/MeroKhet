@@ -10,14 +10,14 @@ class CustomCatHead extends StatefulWidget {
 class _CustomCatHeadState extends State<CustomCatHead> {
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Text("Categories",
+        Text("Categories",
           style: TextStyle(
               fontFamily: 'poppins-semi'
           ),
-        ),IconButton(onPressed: (){Navigator.pushNamed(context, '/categories');}, icon: const Icon(Icons.arrow_forward_ios_rounded,size: 16,))
+        )
       ],
     );
   }

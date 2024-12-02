@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/model/user_model.dart';
 import 'package:merokhetapp/screens/consumer/categories.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
 import 'package:merokhetapp/screens/consumer/my_account.dart';
@@ -8,6 +9,7 @@ import 'package:merokhetapp/screens/farmers/Veggies.dart';
 import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
 import 'package:merokhetapp/screens/farmers/farmer_account.dart';
 import 'package:merokhetapp/screens/farmers/farmer_dashboard.dart';
+import 'package:provider/provider.dart';
 
 class FarmerNavigationFlow extends StatefulWidget {
   const FarmerNavigationFlow({super.key});
@@ -17,16 +19,20 @@ class FarmerNavigationFlow extends StatefulWidget {
 }
 
 class _FarmerNavigationFlowState extends State<FarmerNavigationFlow> {
+
   int myIndex = 2;
-  List screenList = [
-    const FarmerDashboard(),
-    const MyCart(),
-    const AddVegetables(),
-    const Veggies(),
-    const FarmerAccount()
-  ];
+
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserModel?>(context);
+    List screenList = [
+      const FarmerDashboard(),
+      const MyCart(),
+      const AddVegetables(),
+      const Veggies(),
+      const FarmerAccount()
+    ];
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         onTap: (index) {

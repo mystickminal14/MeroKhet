@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/services/auth.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/dash_header.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/header_dash.dart';
 
@@ -86,11 +87,13 @@ class _MyAccountState extends State<MyAccount> {
                         ],
                       ),
                       const SizedBox(height: 20),
-                      _buildListTile(Icons.person, 'Update Profile'),
-                      _buildListTile(Icons.inventory, 'My Products'),
-                      _buildListTile(Icons.help, 'Help and Support'),
-                      _buildListTile(Icons.settings, 'Setting'),
-                      _buildListTile(Icons.logout, 'Logout'),
+                      _buildListTile(Icons.person, 'Update Profile',(){}),
+                      _buildListTile(Icons.inventory, 'My Products',(){}),
+                      _buildListTile(Icons.help, 'Help and Support',(){}),
+                      _buildListTile(Icons.settings, 'Setting',(){}),
+                      _buildListTile(Icons.logout, 'Logout',()async{
+                        await AuthService().logout(context);
+                      }),
                     ],
                   ),
                 ),
@@ -120,13 +123,13 @@ class _MyAccountState extends State<MyAccount> {
     );
   }
 
-  Widget _buildListTile(IconData icon, String title) {
+  Widget _buildListTile(IconData icon, String title,VoidCallback onTap) {
     return ListTile(
       leading: Icon(icon, color: Colors.grey[800]),
       title: Text(title),
       trailing:
           Icon(Icons.arrow_forward_ios, size: 16, color: Colors.grey[800]),
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }

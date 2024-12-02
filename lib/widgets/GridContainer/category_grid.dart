@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/screens/consumer/IndividualCategory/individual_category.dart';
 import '../DashboardLayouts/CustomCategories/categories_card.dart';
 
 class CategoryGrid extends StatelessWidget {
@@ -32,7 +33,12 @@ class CategoryGrid extends StatelessWidget {
       itemBuilder: (context, index) {
         return CategoriesCard(
           onPressed: () {
-Navigator.pushNamed(context, '/individual_category');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>  IndividualCategory(category:categories[index]['text']),
+              ),
+            );
           },
           text: categories[index]['text']!,
           img: categories[index]['img']!,

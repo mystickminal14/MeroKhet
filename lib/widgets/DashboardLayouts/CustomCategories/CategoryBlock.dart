@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/screens/consumer/IndividualCategory/individual_category.dart';
+import 'package:merokhetapp/services/products.dart';
 
 class CategoryBlock extends StatefulWidget {
-  final VoidCallback onPressed;
-  final String text, img;
 
+  final String text, img;
   const CategoryBlock({
     super.key,
-    required this.onPressed,
     required this.text,
     required this.img,
   });
@@ -16,10 +16,18 @@ class CategoryBlock extends StatefulWidget {
 }
 
 class _CategoryBlockState extends State<CategoryBlock> {
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: widget.onPressed,
+      onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>  IndividualCategory(category:widget.text),
+            ),
+          );
+      },
       child: Card(
         elevation: 2,
         shadowColor: Colors.black,
@@ -28,7 +36,7 @@ class _CategoryBlockState extends State<CategoryBlock> {
         ),
         child: Container(
           width: 60,  // Set width to 40
-          height:60, // Set height to 40
+          height:80, // Set height to 40
        padding: const EdgeInsets.all(0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center, // Center content

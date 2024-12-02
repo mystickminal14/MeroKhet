@@ -1,4 +1,8 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:merokhetapp/services/auth.dart';
 import 'package:merokhetapp/utils/alert.dart';
 import 'package:merokhetapp/utils/auth_validators.dart';
@@ -7,6 +11,7 @@ import 'package:merokhetapp/widgets/QuestionnaireLayouts/questionnaire_header.da
 import 'package:merokhetapp/widgets/SocialIcons/facebook_icon.dart';
 import 'package:merokhetapp/widgets/SocialIcons/google_icon.dart';
 import 'package:merokhetapp/widgets/custom_button.dart';
+import 'package:merokhetapp/widgets/custom_file_upload_btn.dart';
 import 'package:merokhetapp/widgets/custom_title.dart';
 
 import '../../utils/error_dialog.dart';
@@ -25,6 +30,10 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
   String phone = '';
   String email = '';
   String pass = '';
+  String error = '';
+  String _base64Image = "";
+  final picker = ImagePicker();
+  File? _image;
   final AuthService _auth = AuthService();
   String? nameErr, passErr, emailErr, phoneErr;
   bool _isSubmitted = false;
@@ -185,7 +194,22 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
       ],
     );
   }
-
+  Future uploadImg() async {
+    final XFile? pickedImage2 =
+    await picker.pickImage(source: ImageSource.gallery);
+    if (pickedImage2 != null) {
+      final bytes = await pickedImage2.readAsBytes();
+      setState(() {
+        _image = File(pickedImage2.path);
+        _base64Image = base64Encode(bytes);
+        error = ''; // Clear any previous errors
+      });
+    } else {
+      setState(() {
+        error = "No image selected";
+      });
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return isLoading
@@ -258,6 +282,41 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
                                   const SizedBox(
                                     height: 12,
                                   ),
+                                  CustomFileUpload(
+                                    upload: "Upload your image",
+                                    labelText:
+                                    "Upload your valid farmer license to verify your farming operations.",
+                                    onPressed:
+                                    uploadImg, // Call the upload function here
+                                    label: "Farmer License", height: 40,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      if (_image == null)
+                                        Text(
+                                          error,
+                                          style: const TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontFamily: 'poppins',
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.red,
+                                          ),
+                                        )
+                                      else
+                                        const Text(
+                                          "Farmer License Uploaded successfully!",
+                                          style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontFamily: 'poppins',
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.w600,
+                                            color: Colors.green,
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                   CustomButton(
                                       text: 'Register',
                                       onPressed: () async {
@@ -275,7 +334,7 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
                                                   pass,
                                                   name,
                                                   phone,
-                                                  'consumer');
+                                                  'consumer',  _base64Image);
 
                                             setState(() {
                                               isLoading = false;
