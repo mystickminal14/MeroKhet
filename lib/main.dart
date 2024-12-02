@@ -5,7 +5,8 @@ import 'package:merokhetapp/navigation/farmer_navigation_flow.dart';
 import 'package:merokhetapp/screens/auth/fingerprint_auth.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/emailverification.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/forgotpassword.dart';
-import 'package:merokhetapp/screens/farmers/view_vegetable.dart';
+import 'package:merokhetapp/screens/consumer/edit_profile.dart';
+import 'package:merokhetapp/screens/consumer/view_vegetable.dart';
 import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
 import 'package:merokhetapp/screens/wrapper.dart';
 import 'package:merokhetapp/services/auth.dart';
@@ -60,8 +61,12 @@ class MyApp extends StatelessWidget {
           '/flash': (context) => const FlashingPage(),
           '/view_veg': (context) => const ViewVegetable(vegId: 'default_id'),
           '/login': (context) => const LoginPage(),
+          '/edit_profile': (context) => const EditProfile(),
+          '/add-cat': (context) =>  const FarmerNavigationFlow(ind: 1,),
+          '/farm_cat': (context) =>  const FarmerNavigationFlow(ind: 2,),
           '/navi': (context) =>  const NavigationFlow(ind: 2,),
           '/cate': (context) =>  const NavigationFlow(ind: 0,),
+          '/account': (context) =>  const NavigationFlow(ind: 4,),
           '/email_verify': (context) => const EmailVerification(),
           '/forget_pass': (context) => const ForgetPassword(),
           '/consumer_registration': (context) => const ConsumerRegistration(),

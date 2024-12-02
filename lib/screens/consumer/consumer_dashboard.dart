@@ -45,18 +45,16 @@ class _ConsumerDashboardState extends State<ConsumerDashboard> {
   Widget build(BuildContext context) {
     return isLoading
         ? const Center(
-
-        child: SpinKitSquareCircle(
-            color: Color(0xff4B6F39), size: 50.0))
-        :  Scaffold(
-      body: SafeArea(
-        child: Container(
-          width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: Column(
-            children: [
-              const HeaderDash(title: 'Dashboard'),
-             Expanded(
+            child: SpinKitSquareCircle(color: Color(0xff4B6F39), size: 50.0))
+        : Scaffold(
+            body: SafeArea(
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Column(
+                  children: [
+                    const HeaderDash(title: 'Dashboard'),
+                    Expanded(
                       child: SingleChildScrollView(
                         child: Column(
                           children: [
@@ -113,10 +111,10 @@ class _ConsumerDashboardState extends State<ConsumerDashboard> {
                         ),
                       ),
                     ),
-            ],
-          ),
-        ),
-      ),
-    );
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 }

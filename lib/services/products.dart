@@ -187,8 +187,75 @@ class VegService {
 
 
 
+  Future<List<Map<String, dynamic>>> getVegetablesByCategoryAndFarmerWithDetails(
+      String category, String farmerId) async {
+    try {
+      final QuerySnapshot vegSnapshot = await FirebaseFirestore.instance
+          .collection('vegetables')
+          .where('category', isEqualTo: category)
+          .where('farmer_id', isEqualTo: farmerId)
+          .get();
 
+      if (vegSnapshot.docs.isEmpty) {
+        return [];
+      }
 
+      final DocumentSnapshot farmerDoc = await FirebaseFirestore.instance
+          .collection('farmers')
+          .doc(farmerId)
+          .get();
+
+      if (!farmerDoc.exists) {
+        throw Exception('Farmer with ID $farmerId does not exist.');
+      }
+
+      final farmerData = farmerDoc.data() as Map<String, dynamic>;
+
+      return vegSnapshot.docs.map((vegDoc) {
+        final vegData = vegDoc.data() as Map<String, dynamic>;
+        return {
+          'vegetable': {...vegData, 'id': vegDoc.id},
+          'farmer': {...farmerData, 'id': farmerDoc.id},
+        };
+      }).toList();
+    } catch (e) {
+      throw Exception("Failed to fetch vegetables and farmer data: $e");
+    }
+  }
+
+  Future<Map<String, dynamic>?> getVegetableByFarmerAndVegId(
+      String vegId, String farmerId) async {
+    try {
+      final querySnapshot = await FirebaseFirestore.instance
+          .collection('vegetables')
+          .where(FieldPath.documentId, isEqualTo: vegId)
+          .where('farmer_id', isEqualTo: farmerId)
+          .get();
+      if (querySnapshot.docs.isEmpty) {
+        throw Exception("No matching vegetable found for farmer with ID $farmerId.");
+      }
+      final vegDoc = querySnapshot.docs.first;
+      final vegData = vegDoc.data();
+      if (vegData['farmer_id'] != farmerId) {
+        throw Exception("Vegetable does not belong to farmer with ID $farmerId.");
+      }
+      final farmerSnapshot = await FirebaseFirestore.instance
+          .collection('farmers')
+          .doc(farmerId)
+          .get();
+
+      if (!farmerSnapshot.exists) {
+        throw Exception("Farmer with ID $farmerId does not exist.");
+      }
+      final farmerData = farmerSnapshot.data() as Map<String, dynamic>;
+      return {
+        'vegetable': {...vegData, 'id': vegDoc.id},
+        'farmer': {...farmerData, 'id': farmerSnapshot.id},
+      };
+    } catch (e) {
+      throw Exception("Failed to fetch vegetable and farmer data: $e");
+    }
+  }
 
 
 }

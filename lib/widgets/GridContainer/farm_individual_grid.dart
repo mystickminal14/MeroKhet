@@ -2,17 +2,18 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:merokhetapp/screens/consumer/view_vegetable.dart';
+import 'package:merokhetapp/screens/farmers/farm_view_veg.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/indi_cate_card.dart';
 
-class IndividualCategoryGrid extends StatefulWidget {
+class FarmIndividualGrid extends StatefulWidget {
   final List<Map<String, dynamic>> categories;
-  const IndividualCategoryGrid({super.key, required this.categories});
+  const FarmIndividualGrid({super.key, required this.categories});
 
   @override
-  State<IndividualCategoryGrid> createState() => _IndividualCategoryGridState();
+  State<FarmIndividualGrid> createState() => _FarmIndividualGridState();
 }
 
-class _IndividualCategoryGridState extends State<IndividualCategoryGrid> {
+class _FarmIndividualGridState extends State<FarmIndividualGrid> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -60,7 +61,7 @@ class _IndividualCategoryGridState extends State<IndividualCategoryGrid> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ViewVegetable(vegId: vegetableId),
+                    builder: (context) => FarmViewVeg(vegId: vegetableId),
                   ),
                 );
               } else {

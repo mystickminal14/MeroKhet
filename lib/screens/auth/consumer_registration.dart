@@ -137,8 +137,7 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
           },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
+
           decoration: InputDecoration(
             helperText: _isSubmitted ? Validators.validateEmail(email) : null,
             helperStyle: const TextStyle(
@@ -283,12 +282,12 @@ class _ConsumerRegistrationState extends State<ConsumerRegistration> {
                                     height: 12,
                                   ),
                                   CustomFileUpload(
-                                    upload: "Upload your image",
+                                    upload: "Upload your profile image",
                                     labelText:
-                                    "Upload your valid farmer license to verify your farming operations.",
+                                    "Upload  valid profile image",
                                     onPressed:
                                     uploadImg, // Call the upload function here
-                                    label: "Farmer License", height: 40,
+                                    label: "Profile", height: 40,
                                   ),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,

@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:merokhetapp/screens/farmers/view_vegetable.dart';
+import 'package:merokhetapp/screens/consumer/view_vegetable.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/indi_cate_card.dart';
 
 class ForYou extends StatefulWidget {

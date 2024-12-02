@@ -12,22 +12,29 @@ import 'package:merokhetapp/screens/farmers/farmer_dashboard.dart';
 import 'package:provider/provider.dart';
 
 class FarmerNavigationFlow extends StatefulWidget {
-  const FarmerNavigationFlow({super.key});
+  final int ind;
+  const FarmerNavigationFlow({super.key, required this.ind});
 
   @override
   State<FarmerNavigationFlow> createState() => _FarmerNavigationFlowState();
 }
 
 class _FarmerNavigationFlowState extends State<FarmerNavigationFlow> {
+  late int myIndex;
 
-  int myIndex = 2;
+  @override
+  void initState() {
+    super.initState();
+    myIndex = widget.ind; // Default index for Home
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
     List screenList = [
       const FarmerDashboard(),
-      const MyCart(),
+
       const AddVegetables(),
       const Veggies(),
       const FarmerAccount()
@@ -51,10 +58,7 @@ class _FarmerNavigationFlowState extends State<FarmerNavigationFlow> {
             icon: Icon(Icons.dashboard),
             label: "Dashboard",
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.payment),
-            label: "My Order",
-          ),
+
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle_outline_sharp),
             label: "Add Veggies",

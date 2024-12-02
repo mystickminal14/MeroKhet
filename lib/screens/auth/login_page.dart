@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
     return isLoading
         ? const Loading()
         : Scaffold(
-            resizeToAvoidBottomInset: false,
+            resizeToAvoidBottomInset: true,
             body: Container(
               width: double.infinity,
               padding: const EdgeInsets.only(top: 10, bottom: 15),

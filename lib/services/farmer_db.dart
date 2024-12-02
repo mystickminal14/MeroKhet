@@ -13,6 +13,8 @@ class FarmerDatabaseService {
     required String email,
     required String phone,
     required String role,
+    required String image,
+
     required String farmAccountName,
     required String license,
     required String foodSafety,
@@ -24,6 +26,7 @@ class FarmerDatabaseService {
         'email': email,
         'phone': phone,
         'role': role,
+        'image': image,
         'farmAccountName': farmAccountName,
         'license': license,
         'foodSafety': foodSafety,

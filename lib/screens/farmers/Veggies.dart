@@ -19,8 +19,8 @@ class _VeggiesState extends State<Veggies> {
           children: [
             // Header Widget
             VegHeader(
-              title: 'Add Vegetables',
-              route: '/home',
+              title: 'Categories',
+              route: '/farm_cat',
             ),
 
             // Body Content

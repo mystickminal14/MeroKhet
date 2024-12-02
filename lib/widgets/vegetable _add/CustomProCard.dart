@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/screens/consumer/IndividualCategory/individual_category.dart';
+import 'package:merokhetapp/widgets/vegetable%20_add/farmer_indi_cat.dart';
 import '../DashboardLayouts/CustomCategories/categories_card.dart';
 
 class CustomProCard extends StatelessWidget {
@@ -32,7 +34,12 @@ class CustomProCard extends StatelessWidget {
       itemBuilder: (context, index) {
         return CategoriesCard(
           onPressed: () {
-            Navigator.pushNamed(context, '/individual_category');
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) =>  FarmerIndiCat(category:categories[index]['text']),
+              ),
+            );
           },
           text: categories[index]['text']!,
           img: categories[index]['img']!,

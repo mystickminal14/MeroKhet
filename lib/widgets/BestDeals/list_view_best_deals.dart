@@ -1,7 +1,7 @@
 import 'dart:convert'; // For base64Decode
 import 'dart:typed_data'; // For Uint8List
 import 'package:flutter/material.dart';
-import 'package:merokhetapp/screens/farmers/view_vegetable.dart';
+import 'package:merokhetapp/screens/consumer/view_vegetable.dart';
 import 'package:merokhetapp/widgets/BestDeals/best_deals.dart';
 
 class ListViewBestDeals extends StatefulWidget {

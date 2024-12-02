@@ -96,6 +96,7 @@ class AuthService {
           email: email,
           phone: phone,
           role: role,
+          image:img??"",
           farmAccountName: farmAccountName ?? '',
           license: license ?? '',
           foodSafety: foodSafety ?? '',
@@ -210,5 +211,25 @@ class AuthService {
       );
     }
   }
+  Future<void> updateConsumerImage(BuildContext context, String consumerId, String imageUrl) async {
+    try {
+      DocumentReference userDocRef = FirebaseFirestore.instance.collection('consumers').doc(consumerId);
+      await userDocRef.update({
+        'image': imageUrl,
+      });
+      ShowAlert.showAlert(
+        context,
+        "Consumer image updated successfully!",
+        AlertType.success,
+      );
+    } catch (e) {
+      ShowAlert.showAlert(
+        context,
+        "Error updating consumer image: ${e.toString()}",
+        AlertType.error,
+      );
+    }
+  }
+
 
 }

@@ -90,7 +90,8 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
           },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
-          keyboardType: TextInputType.visiblePassword,
+
+
 
           decoration: InputDecoration(
             helperText: _isSubmitted ? Validators.validatePhone(phone) : null,
@@ -128,8 +129,7 @@ class _FarmerRegistrationPageState extends State<FarmerRegistrationPage> {
           },
           style: const TextStyle(
               fontFamily: 'poppins', fontWeight: FontWeight.w400),
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: true,
+
           decoration: InputDecoration(
             helperText: _isSubmitted ? Validators.validateEmail(email) : null,
             helperStyle: const TextStyle(

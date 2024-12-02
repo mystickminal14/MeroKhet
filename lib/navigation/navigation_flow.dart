@@ -23,7 +23,6 @@ late int myIndex;
     myIndex = widget.ind; // Default index for Home
   }
 
-
   final List<Widget> screenList = [
     const Categories(),
     const MyOrders(),
