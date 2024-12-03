@@ -15,7 +15,6 @@ import 'package:merokhetapp/widgets/DashboardLayouts/header_dash.dart';
 import 'package:provider/provider.dart';
 
 class MyAccount extends StatefulWidget {
-
   const MyAccount({super.key});
 
   @override
@@ -35,24 +34,25 @@ class _MyAccountState extends State<MyAccount> {
     fetchConsumerData();
   }
 
-   uploadImg() async {
-
-    final XFile? pickedImage2 = await picker.pickImage(source: ImageSource.gallery);
+  uploadImg() async {
+    final XFile? pickedImage2 =
+        await picker.pickImage(source: ImageSource.gallery);
     final user = Provider.of<UserModel?>(context, listen: false);
     setState(() {
-      isLoadingConsumer=true;
+      isLoadingConsumer = true;
     });
     if (pickedImage2 != null) {
       final bytes = await pickedImage2.readAsBytes();
       final base64Image = base64Encode(bytes);
 
       try {
-        await AuthService().updateConsumerImage(context, user?.uid ?? '', base64Image);
+        await AuthService()
+            .updateConsumerImage(context, user?.uid ?? '', base64Image);
 
         setState(() {
           _image = File(pickedImage2.path);
           _base64Image = base64Image;
-          isLoadingConsumer=false;
+          isLoadingConsumer = false;
           fetchConsumerData();
         });
 
@@ -68,13 +68,11 @@ class _MyAccountState extends State<MyAccount> {
           AlertType.error,
         );
         setState(() {
-          isLoadingConsumer=true;
+          isLoadingConsumer = true;
         });
-
       }
     }
   }
-
 
   Future<void> fetchConsumerData() async {
     try {
@@ -104,13 +102,10 @@ class _MyAccountState extends State<MyAccount> {
     if (base64Image.isNotEmpty) {
       try {
         imageBytes = base64Decode(base64Image);
-
       } catch (e) {
         print("Error decoding Base64: $e");
         imageBytes = null;
       }
-
-
     }
     return Scaffold(
       body: isLoadingConsumer
@@ -173,31 +168,32 @@ class _MyAccountState extends State<MyAccount> {
                               ),
                             ),
                             const SizedBox(height: 20),
-                            Wrap(
-                              spacing: 10,
-                              runSpacing: 10,
-                              alignment: WrapAlignment.spaceEvenly,
-                              children: [
-                                _buildIconButton(
-                                    Icons.shopping_bag, 'Orders', constraints),
-                                _buildIconButton(
-                                    Icons.payment, 'Payment', constraints),
-                                _buildIconButton(Icons.local_shipping,
-                                    'Package', constraints),
-                                _buildIconButton(Icons.local_shipping_outlined,
-                                    'To ship', constraints),
-                                _buildIconButton(Icons.fact_check_outlined,
-                                    'To check', constraints),
-                                _buildIconButton(
-                                    Icons.undo, 'Returns', constraints),
-                              ],
-                            ),
+                            // Wrap(
+                            //   spacing: 10,
+                            //   runSpacing: 10,
+                            //   alignment: WrapAlignment.spaceEvenly,
+                            //   children: [
+                            //     _buildIconButton(
+                            //         Icons.shopping_bag, 'Orders', constraints),
+                            //     _buildIconButton(
+                            //         Icons.payment, 'Payment', constraints),
+                            //     _buildIconButton(Icons.local_shipping,
+                            //         'Package', constraints),
+                            //     _buildIconButton(Icons.local_shipping_outlined,
+                            //         'To ship', constraints),
+                            //     _buildIconButton(Icons.fact_check_outlined,
+                            //         'To check', constraints),
+                            //     _buildIconButton(
+                            //         Icons.undo, 'Returns', constraints),
+                            //   ],
+                            // ),
                             const SizedBox(height: 20),
                             _buildListTile(Icons.person, 'Update Profile', () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => EditProfile(consumerData:consumerData),
+                                  builder: (context) =>
+                                      EditProfile(consumerData: consumerData),
                                 ),
                               );
                             }),
@@ -220,23 +216,23 @@ class _MyAccountState extends State<MyAccount> {
     );
   }
 
-  Widget _buildIconButton(
-      IconData icon, String label, BoxConstraints constraints) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(icon, size: constraints.maxWidth * 0.1, color: Colors.grey[800]),
-        const SizedBox(height: 5),
-        Text(
-          label,
-          style: TextStyle(
-            fontSize: constraints.maxWidth * 0.03,
-            color: Colors.grey[800],
-          ),
-        ),
-      ],
-    );
-  }
+  // Widget _buildIconButton(
+  //     IconData icon, String label, BoxConstraints constraints) {
+  //   return Column(
+  //     mainAxisSize: MainAxisSize.min,
+  //     children: [
+  //       Icon(icon, size: constraints.maxWidth * 0.1, color: Colors.grey[800]),
+  //       const SizedBox(height: 5),
+  //       Text(
+  //         label,
+  //         style: TextStyle(
+  //           fontSize: constraints.maxWidth * 0.03,
+  //           color: Colors.grey[800],
+  //         ),
+  //       ),
+  //     ],
+  //   );
+  // }
 
   Widget _buildListTile(IconData icon, String title, VoidCallback onTap) {
     return ListTile(
