@@ -10,6 +10,7 @@ import 'package:merokhetapp/screens/consumer/edit_profile.dart';
 import 'package:merokhetapp/screens/consumer/payment.dart';
 import 'package:merokhetapp/screens/consumer/view_vegetable.dart';
 import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
+import 'package:merokhetapp/screens/farmers/edit_vegetables.dart';
 import 'package:merokhetapp/screens/wrapper.dart';
 import 'package:merokhetapp/services/auth.dart';
 import 'firebase_options.dart';
@@ -31,7 +32,8 @@ import 'package:merokhetapp/screens/flashing_page.dart';
 import 'package:merokhetapp/screens/home/home.dart';
 
 import 'package:provider/provider.dart';
-void main() async{
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -47,7 +49,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
     return StreamProvider<UserModel?>.value(
-      value:AuthService().user,  
+      value: AuthService().user,
       initialData: null,
       child: MaterialApp(
         title: 'Mero Khet',
@@ -56,20 +58,31 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-
         routes: {
           '/wrapper': (context) => const Wrapper(),
-          '/': (context) => const FlashingPage(),
+          '/edit_veg': (context) => const FlashingPage(),
           '/flash': (context) => const FlashingPage(),
           '/view_veg': (context) => const ViewVegetable(vegId: 'default_id'),
           '/login': (context) => const LoginPage(),
           '/edit_profile': (context) => const EditProfile(),
-          '/add-cat': (context) =>  const FarmerNavigationFlow(ind: 1,),
-          '/farm_cat': (context) =>  const FarmerNavigationFlow(ind: 2,),
-          '/navi': (context) =>  const NavigationFlow(ind: 2,),
-          '/cate': (context) =>  const NavigationFlow(ind: 0,),
-          '/my_cart': (context) =>  const NavigationFlow(ind: 1,),
-          '/account': (context) =>  const NavigationFlow(ind: 4,),
+          '/add-cat': (context) => const FarmerNavigationFlow(
+                ind: 1,
+              ),
+          '/farm_cat': (context) => const FarmerNavigationFlow(
+                ind: 2,
+              ),
+          '/navi': (context) => const NavigationFlow(
+                ind: 2,
+              ),
+          '/cate': (context) => const NavigationFlow(
+                ind: 0,
+              ),
+          '/my_cart': (context) => const NavigationFlow(
+                ind: 1,
+              ),
+          '/account': (context) => const NavigationFlow(
+                ind: 4,
+              ),
           '/email_verify': (context) => const EmailVerification(),
           '/forget_pass': (context) => const ForgetPassword(),
           '/consumer_registration': (context) => const ConsumerRegistration(),
@@ -86,8 +99,7 @@ class MyApp extends StatelessWidget {
           '/categories': (context) => const Categories(),
           '/checkout': (context) => const CheckOutPage(),
           '/payment': (context) => const PaymentPage(),
-
-
+          '/': (context) => const EditVegetables(),
         },
       ),
     );

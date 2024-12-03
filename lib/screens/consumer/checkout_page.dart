@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/widgets/DashboardLayouts/dash_header.dart';
+import 'package:merokhetapp/widgets/vegetable%20_add/veg_header.dart';
 
 class CheckOutPage extends StatefulWidget {
   const CheckOutPage({super.key});
@@ -10,97 +12,39 @@ class CheckOutPage extends StatefulWidget {
 class _CheckOutPageState extends State<CheckOutPage> {
   @override
   Widget build(BuildContext context) {
-
-    final Map<String, dynamic>? data = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final Map<String, dynamic>? data =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     print(data);
     // Get screen width and height
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
-        ),
-        title: const Text("Select Address & Pay (₹1035)"),
-        centerTitle: true,
-      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Address Box
-              Container(
-                padding: EdgeInsets.all(screenWidth * 0.04),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      blurRadius: 5,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        const Text(
-                          "Delivery to",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        const Spacer(),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: Colors.grey.shade300,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: const Text(
-                            "Home",
-                            style: TextStyle(fontSize: 12),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    const Text(
-                      "Faizan Khan, 344022\nOpp State Bank Of India,\nAsotra, Barmer Dist,\nRajasthan IN",
-                      style: TextStyle(color: Colors.black87),
-                    ),
-                    SizedBox(height: screenHeight * 0.01),
-                    const Text(
-                      "Phone: 7976382557",
-                      style: TextStyle(color: Colors.black87),
-                    ),
-                    SizedBox(height: screenHeight * 0.02),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey.shade200,
-                      ),
-                      child: const Text(
-                        "Change/Add Address",
-                        style: TextStyle(color: Colors.black),
-                      ),
-                    ),
-                  ],
+              const VegHeader(
+                title: 'Select Address and Pay',
+                route: '/navi',
+              ),
+              const Text(
+                "Delivery",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                decoration: InputDecoration(
+                  hintText: "Delivery Address",
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
                 ),
               ),
               SizedBox(height: screenHeight * 0.03),
               // Coupon Code Section
-              ListTile(
-                title: const Text("Avail Offer (Coupon Code)"),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {},
-              ),
               const Divider(),
               // Price Details
               Padding(
@@ -132,12 +76,12 @@ class _CheckOutPageState extends State<CheckOutPage> {
                     Text(
                       "Total",
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "₹1035",
                       style:
-                      TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -164,7 +108,7 @@ class _CheckOutPageState extends State<CheckOutPage> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
                     padding:
-                    EdgeInsets.symmetric(vertical: screenHeight * 0.02),
+                        EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),

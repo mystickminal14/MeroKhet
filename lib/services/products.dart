@@ -6,28 +6,32 @@ import 'package:merokhetapp/services/vegetable.dart';
 
 class VegService {
   Future<void> addProducts(
-      BuildContext context,
-      String img,
-      String vegName,
-      String category,
-      String price,
-      String stock,
-      String? discount,
-      String? total,
-      String? disPrice,
-      String description,
-      String farmId, {
-        String? userId,
-        String? review,
-        String? rating,
-      }) async {
+    BuildContext context,
+    String img,
+    String vegName,
+    String category,
+    String price,
+    String stock,
+    String? discount,
+    String? total,
+    String? disPrice,
+    String description,
+    String farmId, {
+    String? userId,
+    String? review,
+    String? rating,
+  }) async {
     try {
-      if (vegName.isEmpty || category.isEmpty || description.isEmpty || price.isEmpty || stock.isEmpty) {
+      if (vegName.isEmpty ||
+          category.isEmpty ||
+          description.isEmpty ||
+          price.isEmpty ||
+          stock.isEmpty) {
         throw Exception('Invalid data: Ensure all fields are valid.');
       }
 
-      VegDatabaseService vegDatabaseService = VegDatabaseService(farmerId: farmId);
-
+      VegDatabaseService vegDatabaseService =
+          VegDatabaseService(farmerId: farmId);
 
       await vegDatabaseService.addVegetablesData(
         img: img,
@@ -36,26 +40,21 @@ class VegService {
         price: price,
         stock: stock,
         discount: discount,
-        total:total,
+        total: total,
         disPrice: disPrice,
         description: description,
         reviews: {},
       );
-
-
     } catch (e) {
       ShowAlert.showAlert(
         context,
         "Error adding vegetable",
         AlertType.error,
       );
-
     }
   }
 
-
   Future<List<Map<String, dynamic>>> getFarmerByID(String farmerId) async {
-
     try {
       final DocumentSnapshot farmerSnapshot = await FirebaseFirestore.instance
           .collection('farmers')
@@ -79,13 +78,11 @@ class VegService {
 
   Future<List<Map<String, dynamic>>> getAllVegetablesWithFarmers() async {
     try {
-      final QuerySnapshot vegSnapshot = await FirebaseFirestore.instance
-          .collection('vegetables')
-          .get();
+      final QuerySnapshot vegSnapshot =
+          await FirebaseFirestore.instance.collection('vegetables').get();
 
-      final farmerIds = vegSnapshot.docs
-          .map((doc) => doc['farmer_id'] as String)
-          .toSet();
+      final farmerIds =
+          vegSnapshot.docs.map((doc) => doc['farmer_id'] as String).toSet();
 
       final QuerySnapshot farmerSnapshot = await FirebaseFirestore.instance
           .collection('farmers')
@@ -93,7 +90,8 @@ class VegService {
           .get();
 
       final farmerMap = {
-        for (var doc in farmerSnapshot.docs) doc.id: doc.data() as Map<String, dynamic>
+        for (var doc in farmerSnapshot.docs)
+          doc.id: doc.data() as Map<String, dynamic>
       };
 
       return vegSnapshot.docs.map((vegDoc) {
@@ -109,6 +107,7 @@ class VegService {
       throw Exception("Failed to fetch vegetables with farmer data: $e");
     }
   }
+
   Future<List<Map<String, dynamic>>> getVegetablesById(String? id) async {
     try {
       final DocumentSnapshot vegSnapshot = await FirebaseFirestore.instance
@@ -130,16 +129,17 @@ class VegService {
       throw Exception("Failed to fetch vegetable data: $e");
     }
   }
-  Future<List<Map<String, dynamic>>> getAllVegetablesCatWithFarmers(String category) async {
+
+  Future<List<Map<String, dynamic>>> getAllVegetablesCatWithFarmers(
+      String category) async {
     try {
       final QuerySnapshot vegSnapshot = await FirebaseFirestore.instance
           .collection('vegetables')
           .where('category', isEqualTo: category)
           .get();
 
-      final farmerIds = vegSnapshot.docs
-          .map((doc) => doc['farmer_id'] as String)
-          .toSet();
+      final farmerIds =
+          vegSnapshot.docs.map((doc) => doc['farmer_id'] as String).toSet();
 
       final QuerySnapshot farmerSnapshot = await FirebaseFirestore.instance
           .collection('farmers')
@@ -147,7 +147,8 @@ class VegService {
           .get();
 
       final farmerMap = {
-        for (var doc in farmerSnapshot.docs) doc.id: doc.data() as Map<String, dynamic>
+        for (var doc in farmerSnapshot.docs)
+          doc.id: doc.data() as Map<String, dynamic>
       };
 
       return vegSnapshot.docs.map((vegDoc) {
@@ -163,11 +164,13 @@ class VegService {
       throw Exception("Failed to fetch vegetables with farmer data: $e");
     }
   }
-  Future<List<Map<String, dynamic>>> getVegetablesByCategory(String category) async {
+
+  Future<List<Map<String, dynamic>>> getVegetablesByCategory(
+      String category) async {
     try {
       final QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection('vegetables')
-          .where('category', isEqualTo: category)  // Filter by category
+          .where('category', isEqualTo: category) // Filter by category
           .get();
 
       if (querySnapshot.docs.isEmpty) {
@@ -177,18 +180,16 @@ class VegService {
       // Map the results into a List of Maps
       return querySnapshot.docs.map((doc) {
         final vegData = doc.data() as Map<String, dynamic>;
-        return {...vegData, 'id': doc.id};  // Add the doc ID to the data
+        return {...vegData, 'id': doc.id}; // Add the doc ID to the data
       }).toList();
     } catch (e) {
       throw Exception("Failed to fetch vegetables by category: $e");
     }
   }
 
-
-
-
-  Future<List<Map<String, dynamic>>> getVegetablesByCategoryAndFarmerWithDetails(
-      String category, String farmerId) async {
+  Future<List<Map<String, dynamic>>>
+      getVegetablesByCategoryAndFarmerWithDetails(
+          String category, String farmerId) async {
     try {
       final QuerySnapshot vegSnapshot = await FirebaseFirestore.instance
           .collection('vegetables')
@@ -232,12 +233,14 @@ class VegService {
           .where('farmer_id', isEqualTo: farmerId)
           .get();
       if (querySnapshot.docs.isEmpty) {
-        throw Exception("No matching vegetable found for farmer with ID $farmerId.");
+        throw Exception(
+            "No matching vegetable found for farmer with ID $farmerId.");
       }
       final vegDoc = querySnapshot.docs.first;
       final vegData = vegDoc.data();
       if (vegData['farmer_id'] != farmerId) {
-        throw Exception("Vegetable does not belong to farmer with ID $farmerId.");
+        throw Exception(
+            "Vegetable does not belong to farmer with ID $farmerId.");
       }
       final farmerSnapshot = await FirebaseFirestore.instance
           .collection('farmers')
@@ -256,7 +259,4 @@ class VegService {
       throw Exception("Failed to fetch vegetable and farmer data: $e");
     }
   }
-
-
 }
-

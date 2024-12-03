@@ -197,8 +197,7 @@ class _MyAccountState extends State<MyAccount> {
                                 ),
                               );
                             }),
-                            _buildListTile(
-                                Icons.inventory, 'My Products', () {}),
+
                             _buildListTile(
                                 Icons.help, 'Help and Support', () {}),
                             _buildListTile(Icons.settings, 'Setting', () {}),

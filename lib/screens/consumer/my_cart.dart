@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/widgets/DashboardLayouts/dash_header.dart';
 
 class MyCart extends StatefulWidget {
   const MyCart({super.key});
@@ -8,10 +9,8 @@ class MyCart extends StatefulWidget {
 }
 
 class _MyCartState extends State<MyCart> with TickerProviderStateMixin {
-  // Create a TabController
   late TabController _tabController;
 
-  // Sample lists for different order statuses
   List<Map<String, dynamic>> activeOrders = [
     {"name": "Cremini Mushrooms (Baby Bella)", "price": 565, "quantity": 4},
     {"name": "Tomatoes", "price": 150, "quantity": 2},
@@ -30,7 +29,7 @@ class _MyCartState extends State<MyCart> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this); // 3 tabs
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -39,7 +38,6 @@ class _MyCartState extends State<MyCart> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  // Function to delete an item from the list of orders
   void deleteOrder(String status, int index) {
     setState(() {
       if (status == "Active Orders") {
@@ -55,47 +53,32 @@ class _MyCartState extends State<MyCart> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/Leaf.png',
-              fit: BoxFit.cover), // Replace with your logo
-        ),
-        automaticallyImplyLeading: false, // Remove the back button
-        title: const Center(child: Text("My Orders")),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              // Navigator.pop(context); // Goes back to the previous screen
-            },
-          ),
-        ],
-        elevation: 0, // Removes shadow below the app bar
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: "Active Order"),
-            Tab(text: "Completed"),
-            Tab(text: "Cancelled"),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
+      body: Column(
         children: [
-          // Active Order Tab
-          _buildOrderList("Active Orders"),
-          // Completed Tab
-          _buildOrderList("Completed Orders"),
-          // Cancelled Tab
-          _buildOrderList("Cancelled Orders"),
+          const HeaderDash(title: 'My Cart'),
+          TabBar(
+            controller: _tabController,
+            tabs: const [
+              Tab(text: "Active Order"),
+              Tab(text: "Completed"),
+              Tab(text: "Cancelled"),
+            ],
+          ),
+          Expanded(
+            child: TabBarView(
+              controller: _tabController,
+              children: [
+                _buildOrderList("Active Orders"),
+                _buildOrderList("Completed Orders"),
+                _buildOrderList("Cancelled Orders"),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
-  // Reusable method to build the order list for each tab
   Widget _buildOrderList(String status) {
     List<Map<String, dynamic>> orders = [];
     if (status == "Active Orders") {
@@ -109,25 +92,30 @@ class _MyCartState extends State<MyCart> with TickerProviderStateMixin {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView.builder(
-        itemCount: orders.length, // Dynamic list based on orders count
+        itemCount: orders.length,
         itemBuilder: (context, index) {
           return Card(
             margin: const EdgeInsets.only(bottom: 16),
             child: ListTile(
               leading: Image.asset(
-                  'assets/userprofile.jpg'), // Replace with your image
+                'assets/userprofile.jpg',
+                width: 50,
+                height: 50,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return const Icon(Icons.person, size: 50);
+                },
+              ),
               title: Text(orders[index]["name"]),
               subtitle: Text("Rs. ${orders[index]['price']}"),
               trailing: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text("Qty: ${orders[index]['quantity']}"),
-                  // Only show delete button for active orders
                   if (status == "Active Orders")
                     IconButton(
                       icon: const Icon(Icons.delete, color: Colors.red),
                       onPressed: () {
-                        // Delete the item based on the tab's status
                         deleteOrder(status, index);
                       },
                     ),
