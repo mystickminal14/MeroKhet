@@ -29,7 +29,7 @@ class CustomNextButton extends StatelessWidget {
         style: const TextStyle(
           fontSize: 16,
           color: Colors.white,
-          fontFamily: 'Poppins',
+          fontFamily: 'poppins',
           fontWeight: FontWeight.w400,
         ),
       ),

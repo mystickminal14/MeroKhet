@@ -5,7 +5,9 @@ import 'package:merokhetapp/navigation/farmer_navigation_flow.dart';
 import 'package:merokhetapp/screens/auth/fingerprint_auth.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/emailverification.dart';
 import 'package:merokhetapp/screens/auth/resetpassword/forgotpassword.dart';
+import 'package:merokhetapp/screens/consumer/checkout_page.dart';
 import 'package:merokhetapp/screens/consumer/edit_profile.dart';
+import 'package:merokhetapp/screens/consumer/payment.dart';
 import 'package:merokhetapp/screens/consumer/view_vegetable.dart';
 import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
 import 'package:merokhetapp/screens/wrapper.dart';
@@ -66,6 +68,7 @@ class MyApp extends StatelessWidget {
           '/farm_cat': (context) =>  const FarmerNavigationFlow(ind: 2,),
           '/navi': (context) =>  const NavigationFlow(ind: 2,),
           '/cate': (context) =>  const NavigationFlow(ind: 0,),
+          '/my_cart': (context) =>  const NavigationFlow(ind: 1,),
           '/account': (context) =>  const NavigationFlow(ind: 4,),
           '/email_verify': (context) => const EmailVerification(),
           '/forget_pass': (context) => const ForgetPassword(),
@@ -81,6 +84,8 @@ class MyApp extends StatelessWidget {
           '/home': (context) => const HomePage(),
           '/customer_dashboard': (context) => const ConsumerDashboard(),
           '/categories': (context) => const Categories(),
+          '/checkout': (context) => const CheckOutPage(),
+          '/payment': (context) => const PaymentPage(),
 
 
         },

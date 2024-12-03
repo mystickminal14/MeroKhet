@@ -3,12 +3,15 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:merokhetapp/model/user_model.dart';
+import 'package:merokhetapp/services/my_cart_controller.dart';
 import 'package:merokhetapp/services/products.dart';
 import 'package:merokhetapp/widgets/custom_button.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/custom_view_btn.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/grid_recommended.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/tile.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/veg_header.dart';
+import 'package:provider/provider.dart';
 
 class ViewVegetable extends StatefulWidget {
   final String vegId;
@@ -31,7 +34,6 @@ class _ViewVegetableState extends State<ViewVegetable> {
     super.initState();
     fetchVegetables();
   }
-
   Future<void> fetchVegetables() async {
     try {
       final data = await VegService().getVegetablesById(widget.vegId);
@@ -84,12 +86,34 @@ class _ViewVegetableState extends State<ViewVegetable> {
     }
   }
 
+  int quantity = 1;
+  void addToCart() async {
+    try {
+      final user = Provider.of<UserModel?>(context, listen: false);
+      final vegetableId = vegetables[0]['vegetable']['id'];
+      final vegetableName = vegetables[0]['vegetable']['name'];
+      final price = vegetables[0]['vegetable']['price'];
+
+      await MyCartController().addCart(
+        context: context,
+        consumerId: user?.uid ?? '',
+        vegetableId: vegetableId,
+        vegetableName: vegetableName,
+        price: price,
+        quantity: quantity.toString(), status: 'cart',
+      );
+    } catch (e) {
+      print("Error adding to cart: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to add to cart')),
+      );
+    }
+  }
   final border = const OutlineInputBorder(
     borderSide: BorderSide(width: 1.5, color: Colors.black),
     borderRadius: BorderRadius.all(Radius.circular(5)),
   );
 
-  int quantity = 1;
 
   @override
   Widget build(BuildContext context) {
@@ -274,34 +298,6 @@ class _ViewVegetableState extends State<ViewVegetable> {
                               );
                             }).toList(),
                           ),
-                          // Grid Section
-                          // const Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     CustomTiles(
-                          //         img: 'assets/F.jpg',
-                          //         text: 'Apple',
-                          //         price: 'Rs.25 per kg'),
-                          //     CustomTiles(
-                          //         img: 'assets/F.jpg',
-                          //         text: 'Apple',
-                          //         price: 'Rs.25 per kg'),
-                          //   ],
-                          // ),
-                          // const SizedBox(height: 5),
-                          // const Row(
-                          //   mainAxisAlignment: MainAxisAlignment.center,
-                          //   children: [
-                          //     CustomTiles(
-                          //         img: 'assets/F.jpg',
-                          //         text: 'Apple',
-                          //         price: 'Rs.25 per kg'),
-                          //     CustomTiles(
-                          //         img: 'assets/F.jpg',
-                          //         text: 'Apple',
-                          //         price: 'Rs.25 per kg'),
-                          //   ],
-                          // )
                         ],
                       ),
                     ),
@@ -327,7 +323,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                           text: "Add to Cart",
                           width: MediaQuery.of(context).size.width / 3,
                           icon: Icons.shopping_cart,
-                          onPressed: () {},
+                          onPressed:addToCart,
                         ),
                         const SizedBox(width: 10),
                         CustomViewButton(
