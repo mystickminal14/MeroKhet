@@ -8,7 +8,6 @@ class MyCart extends StatefulWidget {
 }
 
 class _MyCartState extends State<MyCart> with TickerProviderStateMixin {
-  // Create a TabController
   late TabController _tabController;
 
   // Sample lists for different order statuses

@@ -125,50 +125,6 @@ class AuthService {
       ErrorDialog.showErrorDialog(context, "Error: $e");
     }
   }
-  Future<UserModel?> logInWithEmailAndPassword(
-      BuildContext context, String email, String password) async {
-    try {
-      // Step 1: Authenticate with Firebase
-      UserCredential result = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      User? user = result.user;
-
-      if (user == null) {
-        ShowAlert.showAlert(
-          context,
-          "Login failed! Please try again!",
-          AlertType.error,
-        );
-        return null;
-      }
-
-      DocumentSnapshot userDoc = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(user.uid)
-          .get();
-
-      if (!userDoc.exists) {
-        ShowAlert.showAlert(
-          context,
-          "User not found!!",
-          AlertType.error,
-        );
-        return null;
-      }
-
-      Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
-      return _userFromFirebaseUser(user, data);
-    } catch (e) {
-      ShowAlert.showAlert(
-        context,
-        "Error during login: ${e.toString()}",
-        AlertType.error,
-      );
-      return null;
-    }
-  }
 
   Future<void> signOut() async {
     await _auth.signOut();
