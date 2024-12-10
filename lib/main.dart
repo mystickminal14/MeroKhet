@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:merokhetapp/dashboard/dash.dart';
 import 'package:merokhetapp/navigation/navigation_flow.dart';
 import 'package:merokhetapp/resetpassword/emailverification.dart';
 import 'package:merokhetapp/resetpassword/forgotpassword.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       routes: {
-        '/': (context) => const EmailVerification(),
+        '/': (context) => const FlashingPage(),
         '/login': (context) => const LoginPage(),
         '/navi': (context) => const NavigationFlow(),
         '/consumer_registration': (context) => const ConsumerRegistration(),
