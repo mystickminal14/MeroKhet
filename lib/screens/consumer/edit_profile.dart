@@ -10,6 +10,7 @@ import 'package:merokhetapp/utils/alert.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/dash_header.dart';
 import 'package:merokhetapp/widgets/DashboardLayouts/header_dash.dart';
 import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_next_button.dart';
+import 'package:merokhetapp/widgets/vegetable%20_add/veg_header.dart';
 import 'package:provider/provider.dart';
 
 class EditProfile extends StatefulWidget {
@@ -46,7 +47,7 @@ class _EditProfileState extends State<EditProfile> {
 
   uploadImg() async {
     final XFile? pickedImage2 =
-    await picker.pickImage(source: ImageSource.gallery);
+        await picker.pickImage(source: ImageSource.gallery);
     final user = Provider.of<UserModel?>(context, listen: false);
     setState(() {
       isLoading = true;
@@ -62,7 +63,7 @@ class _EditProfileState extends State<EditProfile> {
         setState(() {
           _image = File(pickedImage2.path);
           _base64Image = base64Image;
-          isLoading=false;
+          isLoading = false;
         });
 
         ShowAlert.showAlert(
@@ -79,6 +80,7 @@ class _EditProfileState extends State<EditProfile> {
       }
     }
   }
+
   _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       setState(() {
@@ -143,78 +145,84 @@ class _EditProfileState extends State<EditProfile> {
       }
     }
     return Scaffold(
-      body: Form(
-        key: _formKey,
-        child: Column(
-          children: [
-            const Padding(padding: EdgeInsets.symmetric(horizontal:5),child:const HeaderDash(title: 'Update Profile'),)
-            ,Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    // Profile Picture Section
-                    CircleAvatar(
-                      foregroundImage: imageBytes != null
-                          ? MemoryImage(imageBytes)
-                          : const AssetImage('assets/F.jpg'),
-                      maxRadius: 50,
-                    ),
-                    TextButton(
-                      onPressed: uploadImg,
-                      child: const Text('Change Picture',
-                          style: TextStyle(color: Colors.blue)),
-                    ),
-                    const SizedBox(height: 20),
-
-                    // Username Field
-                    TextFormField(
-                      controller: _usernameController,
-                      decoration: const InputDecoration(
-                        labelText: 'Fullname',
-                        prefixIcon: Icon(Icons.person),
+      body: SafeArea(
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 5),
+                child:  VegHeader(title: 'Update Profile', route: '/account',),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Profile Picture Section
+                      CircleAvatar(
+                        foregroundImage: imageBytes != null
+                            ? MemoryImage(imageBytes)
+                            : const AssetImage('assets/F.jpg'),
+                        maxRadius: 50,
                       ),
-                      validator: (value) =>
-                      value!.isEmpty ? 'FullName cannot be empty' : null,
-                    ),
-                    const SizedBox(height: 10),
-
-                    // Email Field
-                    TextFormField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email Id',
-                        prefixIcon: Icon(Icons.email),
+                      TextButton(
+                        onPressed: uploadImg,
+                        child: const Text('Change Picture',
+                            style: TextStyle(color: Colors.blue)),
                       ),
-                      validator: (value) =>
-                      value!.isEmpty || !value.contains('@')
-                          ? 'Enter a valid email'
-                          : null,
-                    ),
-                    const SizedBox(height: 10),
+                      const SizedBox(height: 20),
 
-                    // Phone Number Field
-                    TextFormField(
-                      controller: _phoneController,
-                      decoration: const InputDecoration(
-                        labelText: 'Phone Number',
-                        prefixIcon: Icon(Icons.phone),
+                      // Username Field
+                      TextFormField(
+                        controller: _usernameController,
+                        decoration: const InputDecoration(
+                          labelText: 'Fullname',
+                          prefixIcon: Icon(Icons.person),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty ? 'FullName cannot be empty' : null,
                       ),
-                      validator: (value) => value!.isEmpty
-                          ? 'Phone number cannot be empty'
-                          : null,
-                    ),
-                    const SizedBox(height: 20),
-                  ],
+                      const SizedBox(height: 10),
+
+                      // Email Field
+                      TextFormField(
+                        controller: _emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'Email Id',
+                          prefixIcon: Icon(Icons.email),
+                        ),
+                        validator: (value) =>
+                            value!.isEmpty || !value.contains('@')
+                                ? 'Enter a valid email'
+                                : null,
+                      ),
+                      const SizedBox(height: 10),
+
+                      // Phone Number Field
+                      TextFormField(
+                        controller: _phoneController,
+                        decoration: const InputDecoration(
+                          labelText: 'Phone Number',
+                          prefixIcon: Icon(Icons.phone),
+                        ),
+                        validator: (value) => value!.isEmpty
+                            ? 'Phone number cannot be empty'
+                            : null,
+                      ),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            const Spacer(),
-            Padding(
-                padding: const EdgeInsets.all(8),
-                child: CustomNextButton(text: 'Update', onPressed: _updateProfile))
-          ],
+              const Spacer(),
+              Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: CustomNextButton(
+                      text: 'Update', onPressed: _updateProfile))
+            ],
+          ),
         ),
       ),
     );

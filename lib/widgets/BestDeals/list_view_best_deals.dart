@@ -53,7 +53,7 @@ class _ListViewBestDealsState extends State<ListViewBestDeals> {
                 imageBytes,
                 fit: BoxFit.cover,
                 width: 120,
-                height: 50,
+                height: 60,
               )
                   : Image.asset(
                 'assets/placeholder.png', // Fallback placeholder

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -93,15 +94,19 @@ class _ViewVegetableState extends State<ViewVegetable> {
       final vegetableId = vegetables[0]['vegetable']['id'];
       final vegetableName = vegetables[0]['vegetable']['name'];
       final price = vegetables[0]['vegetable']['price'];
-
+      final farmerId = vegetables[0]['vegetable']['farmer_id'];
+      final image = vegetables[0]['vegetable']['image'];
       await MyCartController().addCart(
         context: context,
         consumerId: user?.uid ?? '',
         vegetableId: vegetableId,
         vegetableName: vegetableName,
+        farmerId:farmerId,
+        image: image,
         price: price,
-        quantity: quantity.toString(), status: 'cart',
+        quantity: quantity.toString(), status: 'pending',
       );
+      Navigator.pushReplacementNamed(context, '/my_cart');
     } catch (e) {
       print("Error adding to cart: $e");
       ScaffoldMessenger.of(context).showSnackBar(
@@ -128,7 +133,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                 children: [
                   VegHeader(
                       title: vegetables[0]['vegetable']['name'],
-                      route: '/navi'),
+                      route: '/cate'),
                   Expanded(
                     child: SingleChildScrollView(
                       child: Column(
@@ -140,14 +145,14 @@ class _ViewVegetableState extends State<ViewVegetable> {
                               imageBytes!,
                               fit: BoxFit.cover,
                               width: double.infinity,
-                              height: 190,
+                              height: 230,
                             ),
                           ),
                           const SizedBox(height: 10),
 
                           // Content Section
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8),
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -156,7 +161,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                                   vegetables[0]['vegetable']['name'],
                                   style: const TextStyle(
                                     fontFamily: 'poppins',
-                                    fontSize: 16,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -190,7 +195,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                                             'per kg',
                                             style: TextStyle(
                                               fontFamily: 'poppins',
-                                              fontSize: 16,
+                                              fontSize: 19,
                                               fontWeight: FontWeight.w600,
                                             ),
                                           ),
@@ -209,10 +214,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                                                 if (quantity > 1) quantity--;
                                               });
                                             },
-                                            icon: const Icon(
-                                              Icons.exposure_minus_1,
-                                              size: 15,
-                                            ),
+                                            icon: const FaIcon(FontAwesomeIcons.minusCircle)
                                           ),
                                           SizedBox(
                                             width: 40,
@@ -222,6 +224,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                                               style: const TextStyle(
                                                 fontFamily: 'poppins',
                                                 fontWeight: FontWeight.w400,
+                                                fontSize: 18
                                               ),
                                             ),
                                           ),
@@ -232,7 +235,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                                               });
                                             },
                                             icon:
-                                                const Icon(Icons.add, size: 14),
+                                                const FaIcon(FontAwesomeIcons.plusCircle),
                                           ),
                                         ],
                                       ),
@@ -246,7 +249,7 @@ class _ViewVegetableState extends State<ViewVegetable> {
                                   vegetables[0]['vegetable']['description'],
                                   style: const TextStyle(
                                     fontFamily: 'poppins',
-                                    fontSize: 11,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
                                   textAlign: TextAlign.justify,

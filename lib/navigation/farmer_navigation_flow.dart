@@ -4,7 +4,6 @@ import 'package:merokhetapp/screens/consumer/categories.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
 import 'package:merokhetapp/screens/consumer/my_account.dart';
 import 'package:merokhetapp/screens/consumer/my_cart.dart';
-import 'package:merokhetapp/screens/consumer/my_orders.dart';
 import 'package:merokhetapp/screens/farmers/Veggies.dart';
 import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
 import 'package:merokhetapp/screens/farmers/farmer_account.dart';

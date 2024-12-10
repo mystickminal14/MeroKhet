@@ -12,7 +12,9 @@ class MyCartDatabaseService {
       required String vegetableId,
       required String status,
       required String quantity,
+        required String image,
       required String vegetableName,
+        required String farmerId,
       required String price}) async {
     try {
       // Construct a unique document ID
@@ -24,8 +26,11 @@ class MyCartDatabaseService {
         'vegetableId': vegetableId,
         'status': status,
         'quantity': quantity,
+        'image': image,
         'vegetableName': vegetableName,
         'price': price,
+        'farmerId':farmerId,
+
         'updatedAt': FieldValue.serverTimestamp(),
       });
 

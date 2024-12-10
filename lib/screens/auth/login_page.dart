@@ -117,24 +117,24 @@ class _LoginPageState extends State<LoginPage> {
     return isLoading
         ? const Loading()
         : Scaffold(
-            resizeToAvoidBottomInset: true,
-            body: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.only(top: 10, bottom: 15),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
+      body: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          // Align items with space between
+          children: [
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Padding(
                       padding: EdgeInsets.only(top: 40, left: 20),
-                      child: LogoWidget()),
-                  const SizedBox(
-                    height: 10,
-                  ),
-
-                  ///column center
-                  Center(
-                    child: Form(
+                      child: LogoWidget(),
+                    ),
+                    const SizedBox(height: 10),
+                    Form(
                       key: _formKey,
                       child: Column(
                         children: [
@@ -145,8 +145,9 @@ class _LoginPageState extends State<LoginPage> {
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
                                 const CustomTitle(
-                                    title: "Sign in",
-                                    subTitle: "Sign in to your account"),
+                                  title: "Sign in",
+                                  subTitle: "Sign in to your account",
+                                ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
@@ -159,101 +160,102 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                           Container(
-                              margin: const EdgeInsets.only(top: 30),
-                              padding: const EdgeInsets.only(
-                                  top: 0, left: 28, right: 28),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    child: _emailField(),
-                                  ),
-                                  const SizedBox(height: 14),
-                                  Container(child: _passwordField()),
-                                  const SizedBox(height: 8),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          print('Tapped!');
-                                          Navigator.pushNamed(
-                                              context, '/forget_pass');
-                                        },
-                                        child: const Text(
-                                          "Forget Password?",
-                                          style: TextStyle(
-                                              fontSize: 11,
-                                              fontFamily: 'poppins',
-                                              fontWeight: FontWeight.w400),
+                            margin: const EdgeInsets.only(top: 30),
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                _emailField(),
+                                const SizedBox(height: 14),
+                                _passwordField(),
+                                const SizedBox(height: 8),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, '/forget_pass');
+                                      },
+                                      child: const Text(
+                                        "Forget Password?",
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontFamily: 'poppins',
+                                          fontWeight: FontWeight.w400,
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    height: 8,
-                                  ),
-                                  CustomButton(
-                                      text: "Login",
-                                      onPressed: () async {
-                                        setState(() {
-                                          _isSubmitted = true;
-                                        });
-                                        if (_formKey.currentState!.validate()) {
-                                          setState(() {
-                                            isLoading = true;
-                                          });
-                                          dynamic result = await _auth
-                                              .logInWithEmailAndPassword(
-                                                  context, email, pass);
-                                          if (result == null) {
-
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                          } else {
-                                            setState(() {
-                                              isLoading = false;
-                                            });
-                                            Navigator.pushNamed(
-                                                context, '/wrapper');
-                                          }
-                                        }
-                                      })
-                                ],
-                              )),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                CustomButton(
+                                  text: "Login",
+                                  onPressed: () async {
+                                    setState(() {
+                                      _isSubmitted = true;
+                                    });
+                                    if (_formKey.currentState!.validate()) {
+                                      setState(() {
+                                        isLoading = true;
+                                      });
+                                      dynamic result = await _auth
+                                          .logInWithEmailAndPassword(
+                                          context, email, pass);
+                                      setState(() {
+                                        isLoading = false;
+                                      });
+                                      if (result != null) {
+                                        Navigator.pushNamed(
+                                            context, '/wrapper');
+                                      }
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
                         ],
                       ),
                     ),
+                  ],
+                ),
+              ),
+            ),
+            // "New To Platform?" Section at the Bottom
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "New To Platform?",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontFamily: 'poppins',
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
-                  const Spacer(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("New To Platform?",
-                          style: TextStyle(
-                              fontSize: 12,
-                              fontFamily: 'poppins',
-                              fontWeight: FontWeight.w400)),
-                      const SizedBox(width: 5),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(context, '/home');
-                        },
-                        child: const Text(
-                          "Register Now",
-                          style: TextStyle(
-                            fontSize: 12,
-                            fontFamily: 'poppins',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      )
-                    ],
-                  )
+                  const SizedBox(width: 5),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/consumer_registration');
+                    },
+                    child: const Text(
+                      "Register Now",
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontFamily: 'poppins',
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
-          );
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -69,6 +69,7 @@ class MyApp extends StatelessWidget {
           '/navi': (context) =>  const NavigationFlow(ind: 2,),
           '/cate': (context) =>  const NavigationFlow(ind: 0,),
           '/my_cart': (context) =>  const NavigationFlow(ind: 1,),
+          '/my_order': (context) =>  const NavigationFlow(ind: 3,),
           '/account': (context) =>  const NavigationFlow(ind: 4,),
           '/email_verify': (context) => const EmailVerification(),
           '/forget_pass': (context) => const ForgetPassword(),

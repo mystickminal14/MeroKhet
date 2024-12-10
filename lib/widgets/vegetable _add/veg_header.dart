@@ -23,7 +23,7 @@ class _VegHeaderState extends State<VegHeader> {
             child: const Image(
               image: AssetImage('assets/Leaf.png'),
               fit: BoxFit.cover,
-              width: 70,
+              width: 60,
               height: 70,
             ),
           ),

@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:merokhetapp/model/user_model.dart';
+import 'package:merokhetapp/services/my_cart_controller.dart';
+import 'package:merokhetapp/widgets/DashboardLayouts/dash_header.dart';
+import 'package:merokhetapp/widgets/QuestionnaireLayouts/custom_next_button.dart';
+import 'package:provider/provider.dart';
 
 class MyCart extends StatefulWidget {
   const MyCart({super.key});
@@ -7,134 +13,136 @@ class MyCart extends StatefulWidget {
   State<MyCart> createState() => _MyCartState();
 }
 
-class _MyCartState extends State<MyCart> with TickerProviderStateMixin {
-  late TabController _tabController;
+class _MyCartState extends State<MyCart> {
+  List<Map<String, dynamic>> cartItems = [];
+  bool isLoading = true;
 
-  // Sample lists for different order statuses
-  List<Map<String, dynamic>> activeOrders = [
-    {"name": "Cremini Mushrooms (Baby Bella)", "price": 565, "quantity": 4},
-    {"name": "Tomatoes", "price": 150, "quantity": 2},
-  ];
+  Future<void> fetchCart() async {
+    try {
+      final user = Provider.of<UserModel?>(context, listen: false);
+      final fetchedItems = await MyCartController().getCartItems(
+        consumerId: user!.uid, status: 'pending',
+      );
+      setState(() {
+        cartItems = fetchedItems;
+        isLoading = false;
+      });
+    } catch (e) {
+      print("Error fetching cart items: $e");
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
-  List<Map<String, dynamic>> completedOrders = [
-    {"name": "Potatoes", "price": 200, "quantity": 3},
-    {"name": "Onions", "price": 120, "quantity": 1},
-  ];
+  int get totalPrice {
+    int total = 0;
+    for (var item in cartItems) {
+      total += int.parse(item['price']) * int.parse(item['quantity']);
+    }
+    return total;
+  }
 
-  List<Map<String, dynamic>> cancelledOrders = [
-    {"name": "Garlic", "price": 100, "quantity": 5},
-    {"name": "Spinach", "price": 80, "quantity": 1},
-  ];
+  void updateQuantity(int index, int change) {
+    setState(() {
+      int currentQuantity = int.parse(cartItems[index]['quantity']);
+      int newQuantity = currentQuantity + change;
+
+      if (newQuantity < 1) {
+        newQuantity = 1; // Ensure quantity doesn't go below 1
+      }
+
+      cartItems[index]['quantity'] = newQuantity.toString(); // Update quantity as string
+    });
+  }
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this); // 3 tabs
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  // Function to delete an item from the list of orders
-  void deleteOrder(String status, int index) {
-    setState(() {
-      if (status == "Active Orders") {
-        activeOrders.removeAt(index);
-      } else if (status == "Completed Orders") {
-        completedOrders.removeAt(index);
-      } else if (status == "Cancelled Orders") {
-        cancelledOrders.removeAt(index);
-      }
-    });
+    fetchCart();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset('assets/Leaf.png',
-              fit: BoxFit.cover), // Replace with your logo
-        ),
-        automaticallyImplyLeading: false, // Remove the back button
-        title: const Center(child: Text("My Orders")),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              // Navigator.pop(context); // Goes back to the previous screen
-            },
-          ),
-        ],
-        elevation: 0, // Removes shadow below the app bar
-        bottom: TabBar(
-          controller: _tabController,
-          tabs: const [
-            Tab(text: "Active Order"),
-            Tab(text: "Completed"),
-            Tab(text: "Cancelled"),
-          ],
-        ),
-      ),
-      body: TabBarView(
-        controller: _tabController,
-        children: [
-          // Active Order Tab
-          _buildOrderList("Active Orders"),
-          // Completed Tab
-          _buildOrderList("Completed Orders"),
-          // Cancelled Tab
-          _buildOrderList("Cancelled Orders"),
-        ],
-      ),
-    );
-  }
-
-  // Reusable method to build the order list for each tab
-  Widget _buildOrderList(String status) {
-    List<Map<String, dynamic>> orders = [];
-    if (status == "Active Orders") {
-      orders = activeOrders;
-    } else if (status == "Completed Orders") {
-      orders = completedOrders;
-    } else if (status == "Cancelled Orders") {
-      orders = cancelledOrders;
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: ListView.builder(
-        itemCount: orders.length, // Dynamic list based on orders count
-        itemBuilder: (context, index) {
-          return Card(
-            margin: const EdgeInsets.only(bottom: 16),
-            child: ListTile(
-              leading: Image.asset(
-                  'assets/userprofile.jpg'), // Replace with your image
-              title: Text(orders[index]["name"]),
-              subtitle: Text("Rs. ${orders[index]['price']}"),
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text("Qty: ${orders[index]['quantity']}"),
-                  // Only show delete button for active orders
-                  if (status == "Active Orders")
-                    IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () {
-                        // Delete the item based on the tab's status
-                        deleteOrder(status, index);
-                      },
+      body: isLoading
+          ? const Center(
+        child: SpinKitSquareCircle(color: Color(0xff4B6F39), size: 50.0),
+      )
+          : Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            const HeaderDash(title: 'My Cart'),
+            Expanded(
+              child: cartItems.isEmpty
+                  ? const Center(
+                child: Text(
+                  'No items in your cart.',
+                  style: TextStyle(fontSize: 16),
+                ),
+              )
+                  : ListView.builder(
+                itemCount: cartItems.length,
+                itemBuilder: (context, index) {
+                  return Card(
+                    margin: const EdgeInsets.only(bottom: 16),
+                    child: ListTile(
+                      leading: const Icon(Icons.shopping_cart),
+                      title: Text(cartItems[index]['vegetableName']),
+                      subtitle:
+                      Text("Rs. ${cartItems[index]['price']}"),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.remove),
+                            onPressed: () =>
+                                updateQuantity(index, -1),
+                          ),
+                          Text(cartItems[index]['quantity']),
+                          IconButton(
+                            icon: const Icon(Icons.add),
+                            onPressed: () =>
+                                updateQuantity(index, 1),
+                          ),
+                        ],
+                      ),
                     ),
-                ],
+                  );
+                },
               ),
             ),
-          );
-        },
+            const Divider(),
+            Text(
+              "Total: Rs. $totalPrice",
+              style: const TextStyle(
+                  fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 20),
+            CustomNextButton(
+              text: 'Checkout',
+              onPressed: () {
+                List<Map<String, dynamic>> checkoutData = cartItems.map((item) {
+                  return {
+                    'vegetableId': item['vegetableId'],
+                    'farmerId': item['farmerId'],
+                    'cartId': item['id'],
+                    'consumerId': Provider.of<UserModel?>(context, listen: false)!.uid,
+                    'vegetableName': item['vegetableName'],
+                    'quantity': item['quantity'],
+                    'image': item['image'],
+                    'totalPrice': int.parse(item['price']) * int.parse(item['quantity']),
+                  };
+                }).toList();
+                Navigator.pushNamed(context, '/checkout',  arguments: {
+                  'cartItems': checkoutData,
+                  'totalPrice': totalPrice,
+                },);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

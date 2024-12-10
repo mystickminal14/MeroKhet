@@ -34,9 +34,7 @@ class _CustomHeaderDashState extends State<CustomHeaderDash> {
                   fontWeight: FontWeight.w400,
                   fontSize: 16),
             ),
-            const SizedBox(
-              width: 4,
-            ),
+
             IconButton(onPressed: (){
               Navigator.pushReplacementNamed(context, widget.route);
     }, icon:const Icon(Icons.arrow_back_ios_new_sharp))
@@ -46,39 +44,7 @@ class _CustomHeaderDashState extends State<CustomHeaderDash> {
             // ),
           ],
         ),
-        const Padding(
-            padding: EdgeInsets.only(left: 8, right: 8),
-            child: TextField(
-              style:
-                  TextStyle(fontFamily: 'poppins', fontWeight: FontWeight.w400),
-              decoration: InputDecoration(
-                hintText: "Search",
-                hintStyle: TextStyle(
-                    color: Colors.grey,
-                    fontSize: 14,
-                    fontFamily: 'poppins',
-                    fontWeight: FontWeight.w400),
-                filled: true,
-                fillColor: Colors.white,
-                suffixIcon: Icon(Icons.search),
-                enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1.8,
-                      color: Colors.black,
-                      style: BorderStyle.solid,
-                      strokeAlign: BorderSide.strokeAlignCenter,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-                focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      width: 1.8,
-                      color: Colors.black,
-                      style: BorderStyle.solid,
-                      strokeAlign: BorderSide.strokeAlignCenter,
-                    ),
-                    borderRadius: BorderRadius.all(Radius.circular(5))),
-              ),
-            ))
+
       ],
     );
   }

@@ -4,7 +4,8 @@ import 'package:merokhetapp/screens/consumer/categories.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
 import 'package:merokhetapp/screens/consumer/my_account.dart';
 import 'package:merokhetapp/screens/consumer/my_cart.dart';
-import 'package:merokhetapp/screens/consumer/my_orders.dart';
+import 'package:merokhetapp/screens/consumer/my_order.dart';
+
 import 'package:merokhetapp/services/consumer_controller.dart';
 
 class NavigationFlow extends StatefulWidget {
@@ -25,9 +26,9 @@ late int myIndex;
 
   final List<Widget> screenList = [
     const Categories(),
-    const MyOrders(),
-    const ConsumerDashboard(),
     const MyCart(),
+    const ConsumerDashboard(),
+    const MyOrder(),
     const MyAccount(),
   ];
 
@@ -51,8 +52,8 @@ late int myIndex;
             label: "Categories",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.payment),
-            label: "My Orders",
+            icon: Icon(Icons.shopping_bag_outlined),
+            label: "My Cart",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home_filled),
@@ -60,7 +61,7 @@ late int myIndex;
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_shopping_cart),
-            label: "My Cart",
+            label: "My Order",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

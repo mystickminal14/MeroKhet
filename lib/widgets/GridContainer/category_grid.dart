@@ -1,27 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:merokhetapp/screens/consumer/IndividualCategory/individual_category.dart';
-import '../DashboardLayouts/CustomCategories/categories_card.dart';
+import 'package:merokhetapp/widgets/DashboardLayouts/CustomCategories/categories_card.dart';
 
 class CategoryGrid extends StatelessWidget {
-  const CategoryGrid({super.key});
+  final List<Map<String, String>> categories;
+
+  const CategoryGrid({super.key, required this.categories});
 
   @override
   Widget build(BuildContext context) {
-    // Sample data
-    final List<Map<String, String>> categories = [
-      {'text': 'Leafy Greens', 'img': 'assets/Leaf.png'},
-      {'text': 'Root Veg', 'img': 'assets/Leaf.png'},
-      {'text': 'Cruciferous', 'img': 'assets/Leaf.png'},
-      {'text': 'Allium', 'img': 'assets/Leaf.png'},
-      {'text': 'Legumes', 'img': 'assets/Leaf.png'},
-      {'text': 'Tubers', 'img': 'assets/Leaf.png'},
-      {'text': 'Spanish Varieties', 'img': 'assets/Leaf.png'},
-      {'text': 'Herbs and Spices', 'img': 'assets/Leaf.png'},
-      {'text': 'Mushrooms', 'img': 'assets/Leaf.png'},
-      {'text': 'Fruits Veg', 'img': 'assets/Leaf.png'},
-
-    ];
-
     return GridView.builder(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
         crossAxisCount: 3,
@@ -36,7 +23,9 @@ class CategoryGrid extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>  IndividualCategory(category:categories[index]['text']),
+                builder: (context) => IndividualCategory(
+                  category: categories[index]['text']!,
+                ),
               ),
             );
           },

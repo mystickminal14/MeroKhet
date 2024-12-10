@@ -24,7 +24,7 @@ class _IndividualCategoryGridState extends State<IndividualCategoryGrid> {
           crossAxisCount: 2,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
-          childAspectRatio: 3 / 4,
+          childAspectRatio: 0.85,
         ),
         itemCount: widget.categories.length,
         itemBuilder: (context, index) {
@@ -43,14 +43,23 @@ class _IndividualCategoryGridState extends State<IndividualCategoryGrid> {
             }
           }
 
+          final displayImage = imageBytes != null
+              ? Image.memory(
+            imageBytes,
+            height: 120,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          )
+              : Image.asset(
+            'assets/placeholder.png', // Replace with your placeholder image path
+            height: 120,
+            width: double.infinity,
+            fit: BoxFit.cover,
+          );
+
           return IndCateCard(
             text: vegetable['name'] ?? 'Unknown Vegetable',
-            img: Image.memory(
-              imageBytes!,
-              height: 120,
-              width: double.infinity,
-              fit: BoxFit.cover,
-            ),
+            img: displayImage,
             price: vegetable['price']?.toString() ?? '0.0',
             farmer: farmer['farmAccountName'] ?? 'Unknown',
             status: 'In stock',
