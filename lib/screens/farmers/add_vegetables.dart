@@ -267,6 +267,7 @@ class _AddVegetablesState extends State<AddVegetables> {
                                       total = '';
 
                                       vegDesc = '';
+                                      Navigator.pushReplacementNamed(context, 'farm_cat');
                                       ShowAlert.showAlert(
                                         context,
                                         "Vegetable added successfully",

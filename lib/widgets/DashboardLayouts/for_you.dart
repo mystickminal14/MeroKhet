@@ -24,7 +24,7 @@ class _ForYouState extends State<ForYou> {
           crossAxisCount: 2,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
-          childAspectRatio: 0.8,
+          childAspectRatio: 0.75,
         ),
         itemCount: widget.vegetables.length,
         itemBuilder: (context, index) {

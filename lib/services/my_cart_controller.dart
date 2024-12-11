@@ -42,6 +42,60 @@ class MyCartController {
     }
   }
 
+  Future<List<Map<String, dynamic>>> getOrderItems(
+      {required BuildContext context,
+        required String uuid,
+        required String status}) async {
+    try {
+      final orderCollection =
+      FirebaseFirestore.instance.collection('order');
+
+      final querySnapshot = await orderCollection
+          .where('farmerId', isEqualTo: uuid)
+          .where('status', isEqualTo: status)
+          .get();
+
+      final orderItems = querySnapshot.docs.map((doc) {
+        return {
+          'id': doc.id,
+          ...doc.data(),
+        };
+      }).toList();
+      return orderItems;
+    } catch (e) {
+      ShowAlert.showAlert(
+        context,
+        "Error adding item to cart: $e",
+        AlertType.error,
+      );
+      return [];
+    }
+  }
+
+
+  Future<void> editOrder({
+    required BuildContext context,
+    required String orderId, required String status
+  }) async {
+    try {
+      final orderCollection =
+      FirebaseFirestore.instance.collection('order');
+      final orderItem = orderCollection.doc(orderId);
+      await orderItem.update({'status': 'completed'});
+      ShowAlert.showAlert(
+        context,
+        "Order completed successfully",
+        AlertType.success,
+      );
+    } catch (e) {
+      ShowAlert.showAlert(
+        context,
+        "Error deleting order: $e",
+        AlertType.error,
+      );
+    }
+  }
+
   Future<void> delete({
     required BuildContext context,
     required String orderId,
@@ -105,7 +159,7 @@ class MyCartController {
       FirebaseFirestore.instance.collection('order');
 
       final querySnapshot = await orderCollection
-          .where('consumerId', isEqualTo: uuid)
+          .where('farmerId', isEqualTo: uuid)
           .where('status', isEqualTo: status)
           .get();
 

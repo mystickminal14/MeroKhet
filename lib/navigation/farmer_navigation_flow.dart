@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:merokhetapp/model/user_model.dart';
 import 'package:merokhetapp/screens/consumer/categories.dart';
 import 'package:merokhetapp/screens/consumer/consumer_dashboard.dart';
@@ -8,8 +9,8 @@ import 'package:merokhetapp/screens/farmers/Veggies.dart';
 import 'package:merokhetapp/screens/farmers/add_vegetables.dart';
 import 'package:merokhetapp/screens/farmers/farmer_account.dart';
 import 'package:merokhetapp/screens/farmers/farmer_dashboard.dart';
+import 'package:merokhetapp/screens/farmers/orders.dart';
 import 'package:provider/provider.dart';
-
 class FarmerNavigationFlow extends StatefulWidget {
   final int ind;
   const FarmerNavigationFlow({super.key, required this.ind});
@@ -32,10 +33,9 @@ class _FarmerNavigationFlowState extends State<FarmerNavigationFlow> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
     List screenList = [
-      const FarmerDashboard(),
-
-      const AddVegetables(),
       const Veggies(),
+      const AddVegetables(),
+      const Order(),
       const FarmerAccount()
     ];
 
@@ -53,18 +53,19 @@ class _FarmerNavigationFlowState extends State<FarmerNavigationFlow> {
         selectedItemColor: const Color(0xFF4B6F39), // Selected item color
         unselectedItemColor: Colors.black, // Unselected item color
         items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: "Dashboard",
-          ),
+
 
           BottomNavigationBarItem(
             icon: Icon(Icons.add_circle_outline_sharp),
-            label: "Add Veggies",
+            label: "My Veggies",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add_shopping_cart_sharp),
-            label: "My Veggies",
+            label: "Add Veggies",
+          ),
+          BottomNavigationBarItem(
+            icon:  Icon(Icons.shopping_bag_outlined),
+            label: "My Orders",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

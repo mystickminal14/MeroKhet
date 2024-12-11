@@ -239,7 +239,7 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(width: 5),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, '/consumer_registration');
+                      Navigator.pushNamed(context, '/home');
                     },
                     child: const Text(
                       "Register Now",
