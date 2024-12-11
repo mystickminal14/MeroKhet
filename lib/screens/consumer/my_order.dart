@@ -31,12 +31,12 @@ String? error;
   Future<void> listOrder() async {
     try {
       final user = Provider.of<UserModel?>(context, listen: false);
-      final fetchedOrderActive = await MyCartController().getOrder(
+      final fetchedOrderActive = await MyCartController().getConsumerOrder(
         uuid: user!.uid,
         context: context,
         status: 'pending',
       );
-      final fetchedOrderCompleted = await MyCartController().getOrder(
+      final fetchedOrderCompleted = await MyCartController().getConsumerOrder(
         uuid: user.uid,
         context: context,
         status: 'completed',

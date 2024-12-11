@@ -149,6 +149,35 @@ class MyCartController {
       );
     }
   }
+  Future<List<Map<String, dynamic>>> getConsumerOrder(
+      {required BuildContext context,
+        required String uuid,
+        required String status}) async {
+    try {
+      final orderCollection =
+      FirebaseFirestore.instance.collection('order');
+
+      final querySnapshot = await orderCollection
+          .where('consumerId', isEqualTo: uuid)
+          .where('status', isEqualTo: status)
+          .get();
+
+      final orderItems = querySnapshot.docs.map((doc) {
+        return {
+          'id': doc.id,
+          ...doc.data(),
+        };
+      }).toList();
+      return orderItems;
+    } catch (e) {
+      ShowAlert.showAlert(
+        context,
+        "Error adding item to cart: $e",
+        AlertType.error,
+      );
+      return [];
+    }
+  }
 
   Future<List<Map<String, dynamic>>> getOrder(
       {required BuildContext context,
