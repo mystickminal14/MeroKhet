@@ -7,6 +7,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:merokhetapp/model/user_model.dart';
 import 'package:merokhetapp/screens/farmers/farm_head.dart';
+import 'package:merokhetapp/screens/farmers/update_profile.dart';
 
 import 'package:merokhetapp/services/auth.dart';
 import 'package:merokhetapp/services/farmer_controller.dart';
@@ -194,12 +195,12 @@ class _FarmerAccountState extends State<FarmerAccount> {
                       ),
                       const SizedBox(height: 20),
                       _buildListTile(Icons.person, 'Update Profile', () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //     builder: (context) => EditProfile(farmerData:farmerData),
-                        //   ),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => UpdateProfile(farmerData:farmerData),
+                          ),
+                        );
                       }),
                       _buildListTile(
                           Icons.inventory, 'My Products', () {}),

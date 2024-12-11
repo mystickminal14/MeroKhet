@@ -65,8 +65,10 @@ class MyApp extends StatelessWidget {
           '/login': (context) => const LoginPage(),
           '/edit_profile': (context) => const EditProfile(),
           '/add-cat': (context) =>  const FarmerNavigationFlow(ind: 1,),
-          '/farm_cat': (context) =>  const FarmerNavigationFlow(ind: 2,),
+          '/farm_cat': (context) =>  const FarmerNavigationFlow(ind: 0,),
           '/orders': (context) =>  const FarmerNavigationFlow(ind: 2,),
+          '/farm_acc': (context) =>  const FarmerNavigationFlow(ind: 3,),
+
           '/navi': (context) =>  const NavigationFlow(ind: 2,),
           '/cate': (context) =>  const NavigationFlow(ind: 0,),
           '/my_cart': (context) =>  const NavigationFlow(ind: 1,),
