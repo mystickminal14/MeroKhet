@@ -24,7 +24,7 @@ class _IndividualCategoryGridState extends State<IndividualCategoryGrid> {
           crossAxisCount: 2,
           crossAxisSpacing: 8,
           mainAxisSpacing: 8,
-          childAspectRatio: 0.85,
+          childAspectRatio:  3 / 4,
         ),
         itemCount: widget.categories.length,
         itemBuilder: (context, index) {

@@ -188,7 +188,7 @@ class VegService {
 
 
   Future<List<Map<String, dynamic>>> getVegetablesByCategoryAndFarmerWithDetails(
-      String category, String farmerId) async {
+      String? category, String farmerId) async {
     try {
       final QuerySnapshot vegSnapshot = await FirebaseFirestore.instance
           .collection('vegetables')

@@ -1,12 +1,11 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:merokhetapp/services/products.dart';
 import 'package:merokhetapp/widgets/GridContainer/farm_individual_grid.dart';
-import 'package:merokhetapp/widgets/GridContainer/individual_category_grid.dart';
 import 'package:merokhetapp/widgets/vegetable%20_add/veg_header.dart';
-import '../../../widgets/DashboardLayouts/header_dash.dart';
+import 'package:provider/provider.dart';
+import '../../model/user_model.dart';
 
 class FarmerIndiCat extends StatefulWidget {
   final String? category;
@@ -40,35 +39,31 @@ class _FarmerIndiCatState extends State<FarmerIndiCat> {
 
   Future<void> fetchVegetables() async {
     try {
+      final user = Provider.of<UserModel?>(context, listen: false);
+      setState(() => isLoading = true);
       final categoryDatas = await VegService()
-          .getAllVegetablesCatWithFarmers(widget.category ?? '');
-
-      if (categoryDatas.isEmpty) {
-        print('No vegetables found.');
-      } else {
-        setState(() {
-          categoriesData = categoryDatas;
-          filteredData = categoryDatas; // Initially show all data
-        });
-      }
-    } catch (e) {
-      print("Error fetching vegetables or farmer data: $e");
-    } finally {
+          .getVegetablesByCategoryAndFarmerWithDetails(widget.category, user!.uid);
       setState(() {
-        isLoading = false;
+        categoriesData = categoryDatas;
+        filteredData = categoryDatas; // Initially show all data
       });
+    } catch (e) {
+      debugPrint("Error fetching vegetables or farmer data: $e");
+    } finally {
+      setState(() => isLoading = false);
     }
   }
 
   void _onSearchChanged() {
     if (_debounce?.isActive ?? false) _debounce!.cancel();
     _debounce = Timer(const Duration(milliseconds: 300), () {
+      final searchTerm = _searchController.text.toLowerCase();
       setState(() {
         filteredData = categoriesData
             .where((item) => item['vegetable']['name']
             .toString()
             .toLowerCase()
-            .contains(_searchController.text.toLowerCase()))
+            .contains(searchTerm))
             .toList();
       });
     });
@@ -81,7 +76,9 @@ class _FarmerIndiCatState extends State<FarmerIndiCat> {
         child: isLoading
             ? const Center(
           child: SpinKitSquareCircle(
-              color: Color(0xff4B6F39), size: 50.0),
+            color: Color(0xff4B6F39),
+            size: 50.0,
+          ),
         )
             : Container(
           padding: const EdgeInsets.symmetric(horizontal: 8),
@@ -131,7 +128,6 @@ class _FarmerIndiCatState extends State<FarmerIndiCat> {
               ),
               const SizedBox(height: 20),
               Expanded(
-                // Ensures the grid takes up remaining space
                 child: filteredData.isEmpty
                     ? const Center(
                   child: Text(
