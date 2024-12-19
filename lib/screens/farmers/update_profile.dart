@@ -29,7 +29,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
   final TextEditingController _phoneController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
+String im='';
   bool isLoading = false;
 
   @override
@@ -40,6 +40,8 @@ class _UpdateProfileState extends State<UpdateProfile> {
       _usernameController.text = widget.farmerData!['fullName'] ?? '';
       _emailController.text = widget.farmerData!['email'] ?? '';
       _phoneController.text = widget.farmerData!['phone'] ?? '';
+      im = widget.farmerData!['image'] ?? '';
+      _base64Image=im;
     }
   }
 

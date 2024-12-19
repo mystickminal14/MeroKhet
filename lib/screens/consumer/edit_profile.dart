@@ -26,7 +26,7 @@ class _EditProfileState extends State<EditProfile> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-
+  String im='';
   bool isLoading = false;
 
   @override
@@ -37,6 +37,8 @@ class _EditProfileState extends State<EditProfile> {
       _usernameController.text = widget.consumerData!['fullName'] ?? '';
       _emailController.text = widget.consumerData!['email'] ?? '';
       _phoneController.text = widget.consumerData!['phone'] ?? '';
+      im = widget.consumerData!['image'] ?? '';
+      _base64Image = im;
     }
   }
 
@@ -66,11 +68,6 @@ class _EditProfileState extends State<EditProfile> {
           isLoading = false;
         });
 
-        ShowAlert.showAlert(
-          context,
-          "Image uploaded successfully!",
-          AlertType.success,
-        );
       } catch (e) {
         ShowAlert.showAlert(
           context,
